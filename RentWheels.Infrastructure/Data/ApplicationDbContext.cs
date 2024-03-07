@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace RentWheels.Data
+namespace RentWheels.Infrastructure.Data
 {
 	public class ApplicationDbContext : IdentityDbContext
 	{
