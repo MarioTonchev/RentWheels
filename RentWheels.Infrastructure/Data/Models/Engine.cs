@@ -12,5 +12,6 @@ namespace RentWheels.Infrastructure.Data.Models
         public int Cubage { get; set; }
         [Required]
         public string FuelType { get; set; } = string.Empty;
+        public IEnumerable<Car> Cars { get; set; } = new List<Car>();
     }
 }
