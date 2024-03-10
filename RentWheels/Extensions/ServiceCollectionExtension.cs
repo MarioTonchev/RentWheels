@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using RentWheels.Core.Contracts;
+using RentWheels.Core.Services;
 using RentWheels.Infrastructure.Data;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -8,6 +10,8 @@ namespace Microsoft.Extensions.DependencyInjection
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
+			services.AddScoped<ICarService, CarService>();
+
 			return services;
 		}
 
