@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RentWheels.Infrastructure.Models
 {
-    [Comment("Containts details about the renting of a car by a user")]
+    [Comment("Contains details about the renting of a car by a user")]
 	public class Rental
 	{
         [Key]
@@ -31,7 +31,8 @@ namespace RentWheels.Infrastructure.Models
         public DateTime End { get; set; }
         [Required]
         [Comment("Total price of the rent")]
-        public decimal TotalPrice { get; set; }
+		[Column(TypeName = "decimal(18,2)")]
+		public decimal TotalPrice { get; set; }
         public IList<RentalLocation> RentalsLocations { get; set; } = new List<RentalLocation>();
     }
 }

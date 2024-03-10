@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static RentWheels.Infrastructure.Constants.DataConstants.CarConstants;
@@ -28,9 +29,13 @@ namespace RentWheels.Infrastructure.Models
         public string Color { get; set; } = string.Empty;
         [Required]
         [Comment("Price per day for renting the car")]
-        public decimal PricePerDay { get; set; }
+		[Column(TypeName = "decimal(18,2)")]
+		public decimal PricePerDay { get; set; }
         [Required]
-        [Comment("Checks wheter the car is rented or not")]
+        [Comment("Url of the image of the car")]
+        public string ImageUrl { get; set; } = string.Empty;
+        [Required]
+        [Comment("Checks whether the car is rented or not")]
         public string Available { get; set; } = string.Empty;
         [Required]
         [Comment("Id of the engine of the car")]
@@ -38,5 +43,11 @@ namespace RentWheels.Infrastructure.Models
         [Required]
         [ForeignKey(nameof(EngineId))]
         public Engine Engine { get; set; } = null!;
-    }
+        [Required]
+        [Comment("Identifier of the owner of the car")]
+        public string OwnerId { get; set; } = string.Empty;
+        [Required]
+        [ForeignKey(nameof(OwnerId))]
+        public IdentityUser Owner { get; set; } = null!;
+	}
 }
