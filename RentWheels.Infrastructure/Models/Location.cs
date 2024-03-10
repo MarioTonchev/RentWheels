@@ -15,6 +15,6 @@ namespace RentWheels.Infrastructure.Models
 		[Required]
 		[Comment("Where the car will be dropped off by the renter")]
 		public string DropOff { get; set; } = string.Empty;
-		public IList<RentalLocation> RentalsLocations { get; set; } = new List<RentalLocation>();
+		public IList<Rental> Rentals { get; set; } = new List<Rental>();
 	}
 }

@@ -33,6 +33,11 @@ namespace RentWheels.Infrastructure.Models
         [Comment("Total price of the rent")]
 		[Column(TypeName = "decimal(18,2)")]
 		public decimal TotalPrice { get; set; }
-        public IList<RentalLocation> RentalsLocations { get; set; } = new List<RentalLocation>();
+        [Required]
+        [Comment("Identifier of the location (place of pick up and drop off)")]
+        public int LocationId { get; set; }
+        [Required]
+        [ForeignKey(nameof(LocationId))]
+        public Location Location { get; set; } = null!;
     }
 }

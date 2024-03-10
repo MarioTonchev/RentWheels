@@ -14,8 +14,6 @@ namespace RentWheels.Infrastructure.Data
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
-			builder.Entity<RentalLocation>().HasKey(rl => new { rl.RentalId, rl.LocationId });
-
 			builder.ApplyConfiguration(new EngineConfiguration());
 			builder.ApplyConfiguration(new CarConfiguration());
 
@@ -27,6 +25,5 @@ namespace RentWheels.Infrastructure.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Rental> Rentals { get; set; }
         public DbSet<Location> Locations { get; set; }
-        public DbSet<RentalLocation> RentalsLocations { get; set; }
     }
 }
