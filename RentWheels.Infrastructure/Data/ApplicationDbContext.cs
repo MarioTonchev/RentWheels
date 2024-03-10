@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using RentWheels.Infrastructure.Data.SeedDb;
 using RentWheels.Infrastructure.Models;
 
 namespace RentWheels.Infrastructure.Data
@@ -14,6 +15,9 @@ namespace RentWheels.Infrastructure.Data
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			builder.Entity<RentalLocation>().HasKey(rl => new { rl.RentalId, rl.LocationId });
+
+			builder.ApplyConfiguration(new EngineConfiguration());
+			builder.ApplyConfiguration(new CarConfiguration());
 
 			base.OnModelCreating(builder);
 		}
