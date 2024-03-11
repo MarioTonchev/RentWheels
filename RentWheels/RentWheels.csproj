@@ -19,4 +19,8 @@
     <ProjectReference Include="..\RentWheels.Core\RentWheels.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Car\" />
+  </ItemGroup>
+
 </Project>
