@@ -17,6 +17,8 @@ namespace RentWheels.Infrastructure.Data
 			builder.ApplyConfiguration(new EngineConfiguration());
 			builder.ApplyConfiguration(new CarConfiguration());
 
+			builder.Entity<Car>().Property(c => c.Available).HasDefaultValue("true");
+
 			base.OnModelCreating(builder);
 		}
 
