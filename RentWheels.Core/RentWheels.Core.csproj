@@ -10,8 +10,4 @@
     <ProjectReference Include="..\RentWheels.Infrastructure\RentWheels.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Constants\" />
-  </ItemGroup>
-
 </Project>

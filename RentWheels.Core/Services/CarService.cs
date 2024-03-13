@@ -39,15 +39,24 @@ namespace RentWheels.Core.Services
             }).Take(3).ToListAsync();
         }
 
-		public async Task<IEnumerable<EngineAllViewModel>> AllEnginesAsyc()
+		public async Task<IEnumerable<EngineAllViewModel>> AllEnginesAsync()
 		{
 			return await repository.AllAsReadOnly<Engine>().Select(e => new EngineAllViewModel()
 			{
-				HorsePower = e.Horsepower,
+				Name = e.Name,
+				Horsepower = e.Horsepower,
 				Cubage = e.Cubage,
 				FuelType = e.FuelType,
 			}).ToListAsync();
 		}
+        public async Task<IEnumerable<EngineFormViewModel>> AllEnginesFormAsync()
+        {
+            return await repository.AllAsReadOnly<Engine>().Select(e => new EngineFormViewModel()
+            {
+				Id = e.Id,
+                Name = e.Name
+            }).ToListAsync();
+        }
 
 		public async Task<bool> CarExistsAsync(int carId)
 		{
@@ -64,12 +73,13 @@ namespace RentWheels.Core.Services
 			var car = new Car()
 			{
 				Brand = model.Brand,
-				Model = model.Model,
+				Model = model.CarModel,
 				Year = model.Year,
 				ImageUrl = model.ImageUrl,
 				Color = model.Color,
 				EngineId = model.EngineId,
 				PricePerDay = model.PricePerDay,
+				Available = "true",
 				OwnerId = ownerId
 			};
 
@@ -83,5 +93,6 @@ namespace RentWheels.Core.Services
 		{
 			throw new NotImplementedException();
 		}
+
     }
 }
