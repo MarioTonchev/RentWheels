@@ -21,6 +21,24 @@ namespace RentWheels.Infrastructure.Constants
 
 			public const double CarMinPricePerDay = 0.00;
 			public const double CarMaxPricePerDay = 2000.00;
+
+			public const int CarMinYear = 2000;
+			public const int CarMaxYear = 2024;
+		}
+		
+		public static class EngineConstants
+		{
+			public const int EngineMinNameLength = 3;
+			public const int EngineMaxNameLength = 20;
+
+			public const double EngineMinHorsepower = 0.00;
+			public const double EngineMaxHorsepower = 1000.00;
+
+			public const double EngineMinCubage = 0.00;
+			public const double EngineMaxCubage = 6000.00;
+
+			public const int EngineMinFuelTypeLength = 3;
+			public const int EngineMaxFuelTypeLength = 20;
 		}
 
 		public static class ReviewConstants
