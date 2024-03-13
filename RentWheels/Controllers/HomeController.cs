@@ -19,6 +19,7 @@ namespace RentWheels.Controllers
 		}
 
 		[AllowAnonymous]
+		[HttpGet]
 		public async Task<IActionResult> Index()
 		{
 			var cars = await carService.LastThreeCarsAsync();
