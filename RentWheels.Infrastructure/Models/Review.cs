@@ -14,9 +14,9 @@ namespace RentWheels.Infrastructure.Models
         public int Id { get; set; }
         [Required]
         [Comment("Identifier of the reviewed car")]
-        public int CardId { get; set; }
+        public int CarId { get; set; }
         [Required]
-        [ForeignKey(nameof(CardId))]
+        [ForeignKey(nameof(CarId))]
         public Car Car { get; set; } = null!;
         [Required]
         [Comment("Identifier of the reviewer of the car")]
