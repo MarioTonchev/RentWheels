@@ -1,61 +1,39 @@
-﻿@model IEnumerable<CarAllViewModel>
-@{
-    ViewData["Title"] = "Welcome to RentWheels";
-}
-       
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Entities</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-        /* Add custom styles here */
-        .entity-card {
-            margin-bottom: 20px;
-            width: 400px; /* Adjust the width of the card */
-        }
-
-            .entity-card img {
-                max-width: 100%;
-                height: auto;
-            }
-    </style>
-</head>
-<body>
+﻿<div class="jumbotron text-center">
+    <h1 class="display-4">Welcome to RentWheels!</h1>
+    <p class="lead">Rent a vehicle for your next adventure!</p>
     <div class="container">
-        <h1>Recent cars</h1>
-        <div class="row">
-            @foreach (var entity in Model)
-            {
-                <div class="col-md-6">
-                    <div class="card entity-card">
-                        <img class="card-img-top" src="@entity.ImageUrl" alt="Entity Image">
-                        <div class="card-body">
-                            <h5 class="card-title">@entity.Brand</h5>
-                            <p class="card-text">Model: @entity.Model</p>
-                            <p class="card-text">Year: @entity.Year</p>
-                            <!-- Add other properties as needed -->
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-        <nav aria-label="Entities Pagination">
-            <ul class="pagination justify-content-center">
-                @for (int i = 1; i <= Model.Count(); i++)
-                {
-                    <li class="page-item @(i == 1 ? "active" : "")">
-                        <a class="page-link" href="?page=@i">@i</a>
-                    </li>
-                }
-            </ul>
-        </nav>
+        <a class="btn btn-primary btn-lg" asp-action="All" asp-controller="Car" role="button">Rent Now</a>
     </div>
+</div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Add custom JavaScript if needed -->
-</body>
-</html>
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="https://as2.ftcdn.net/v2/jpg/01/82/79/15/1000_F_182791568_tMC0boBi8N8pQCN1AfqiJWJX3nTc8rJr.jpg" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="card-title">Easy Booking</h3>
+                    <p class="card-text">Book your vehicle quickly and hassle-free</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="https://as1.ftcdn.net/v2/jpg/05/90/94/28/1000_F_590942801_SRhmWxm4EHmiG2CqgeHEC1akCjGzZkdu.jpg" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="card-title">Wide Selection</h3>
+                    <p class="card-text">Choose from a variety of vehicles for every occasion</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="https://as1.ftcdn.net/v2/jpg/04/87/92/60/1000_F_487926018_Jv0AzDpX7cTE1Qvcg7TpLGzGF6k0PYZm.jpg" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="card-title">Affordable Prices</h3>
+                    <p class="card-text">Get competitive rates on all rentals</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

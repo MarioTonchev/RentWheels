@@ -5,7 +5,7 @@ using static RentWheels.Core.Constants.MessageConstants;
 
 namespace RentWheels.Core.VeiwModels.Car
 {
-	public class CarAddViewModel
+	public class CarFormViewModel
 	{
         [Required(ErrorMessage = RequiredMessage)]
         [StringLength(CarMaxBrandLength, MinimumLength = CarMinBrandLength

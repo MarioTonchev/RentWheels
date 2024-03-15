@@ -1,0 +1,55 @@
+﻿@using System.Security.Claims
+@model IEnumerable<CarAllViewModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Entities</title>
+    <style>
+        .entity-card {
+            margin-bottom: 20px;
+            width: 400px; /* Adjust the width of the card  */
+        }
+
+            .entity-card img {
+                max-width: 100%;
+                height: auto;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Recent cars</h1>
+        <div class="row">
+            @foreach (var car in Model)
+            {
+                <div class="col-md-6">
+                    <div class="card entity-card">
+                        <img class="card-img-top" src="@car.ImageUrl" alt="Entity Image">
+                        <div class="card-body">
+                            <h5 class="card-title">@car.Brand</h5>
+                            <p class="card-text">Model: @car.Model</p>
+                            <p class="card-text">Year: @car.Year</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <nav aria-label="Entities Pagination">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= Model.Count(); i++)
+                {
+                    <li class="page-item @(i == 1 ? "active" : "")">
+                        <a class="page-link" href="?page=@i">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
