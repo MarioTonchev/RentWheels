@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using RentWheels.Core.Contracts;
-using RentWheels.Core.VeiwModels.Car;
 using RentWheels.Core.VeiwModels.Rental;
 using RentWheels.Infrastructure.Common;
 using RentWheels.Infrastructure.Models;
-using System.Globalization;
 using static RentWheels.Infrastructure.Constants.DataConstants;
 
 namespace RentWheels.Core.Services
@@ -30,8 +27,10 @@ namespace RentWheels.Core.Services
                 End = e,
                 PickUpLocation = model.PickUp,
                 DropOffLocation = model.DropOff,
-                TotalPrice = CalcualtePrice(s, e, car.PricePerDay)
+                TotalPrice = CalcualteTotalPrice(s, e, car.PricePerDay)
             };
+
+            car.Available = "false";
 
             await repository.AddAsync(rental);
             await repository.SaveChangesAsync();
@@ -40,22 +39,69 @@ namespace RentWheels.Core.Services
         {
             return await repository.AllAsReadOnly<Rental>().Where(r => r.RenterId == renterId).Select(r => new MyRentedCarsViewModel()
             {
+                Id = r.CarId,
                 Brand = r.Car.Brand,
-                Model = r.Car.Model,
-                Year = r.Car.Year
+                CarModel = r.Car.Model,
+                Start = r.Start.ToString(DateFormated),
+                End = r.End.ToString(DateFormated),
+                TotalPrice = r.TotalPrice
             }).ToListAsync();
         }
 
-        public Task EndRentAsync()
+        public async Task EndRentAsync(int carId, string renterId)
         {
-            throw new NotImplementedException();
+            var rental = await repository.All<Rental>().Where(r => r.CarId == carId && r.RenterId == renterId)
+                .FirstOrDefaultAsync();
+
+            if (rental != null) 
+            {
+                repository.Delete(rental);
+                await repository.SaveChangesAsync();
+            }
         }
 
-        private decimal CalcualtePrice(DateTime s, DateTime e, decimal pricePerDay)
+        private decimal CalcualteTotalPrice(DateTime s, DateTime e, decimal pricePerDay)
         {
-            int days = (e - s).Days;
+            int days = Math.Abs((e - s).Days);
+
+            if (days == 0)
+            {
+                return pricePerDay;
+            }
 
             return pricePerDay * days;
+        }
+
+        public async Task<bool> IsCarValidForRentAsync(int carId)
+        {
+            var car = await repository.AllAsReadOnly<Car>().Where(c => c.Id == carId).FirstOrDefaultAsync();
+
+            if (car == null)
+            {
+                return false;
+            }
+
+            if (car.Available == "false")
+            {
+                return false;
+            }
+
+            if (car.Rentals.Any(r => r.CarId == carId))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> IsCarRentedBySameUserAsync(int carId, string renterId)
+        {
+            if (await repository.AllAsReadOnly<Rental>().AnyAsync(r => r.CarId == carId && r.RenterId == renterId))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

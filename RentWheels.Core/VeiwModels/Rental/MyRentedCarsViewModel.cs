@@ -2,8 +2,11 @@
 {
     public class MyRentedCarsViewModel
     {
+        public int Id { get; set; }
         public string Brand { get; set; } = string.Empty;
-        public string Model { get; set; } = string.Empty;
-        public int Year { get; set; }
+        public string CarModel { get; set; } = string.Empty;
+        public string Start { get; set; } = string.Empty;
+        public string End { get; set; } = string.Empty;
+        public decimal TotalPrice { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace RentWheels.Controllers
         [HttpGet]
         public async Task<IActionResult> All()
         {
-            var cars = await carService.LastThreeCarsAsync();
+            var cars = await carService.AllCarsAsync();
 
             return View(cars);
         }
