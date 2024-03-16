@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static RentWheels.Infrastructure.Constants.DataConstants.RentalConstants;
 
 namespace RentWheels.Infrastructure.Models
 {
@@ -34,10 +35,12 @@ namespace RentWheels.Infrastructure.Models
 		[Column(TypeName = "decimal(18,2)")]
 		public decimal TotalPrice { get; set; }
         [Required]
-        [Comment("Identifier of the location (place of pick up and drop off)")]
-        public int LocationId { get; set; }
+        [StringLength(RentalMaxPickUpLocationLength)]
+        [Comment("Where the car will be picked up")]
+        public string PickUpLocation { get; set; } = string.Empty;
         [Required]
-        [ForeignKey(nameof(LocationId))]
-        public Location Location { get; set; } = null!;
+        [StringLength(RentalMaxDropOffLocationLength)]
+        [Comment("Where the car will be dropped off")]
+        public string DropOffLocation { get; set; } = string.Empty;
     }
 }

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using static RentWheels.Infrastructure.Constants.DataConstants.CarConstants;
 using static RentWheels.Core.Constants.MessageConstants;
+using RentWheels.Core.VeiwModels.Category;
 
 namespace RentWheels.Core.VeiwModels.Car
 {
@@ -39,5 +40,10 @@ namespace RentWheels.Core.VeiwModels.Car
         public int EngineId { get; set; }
 
         public IEnumerable<EngineFormViewModel> Engines { get; set; } = new List<EngineFormViewModel>();
+
+        [Required(ErrorMessage = RequiredMessage)]
+        public int CategoryId { get; set; }
+
+        public IEnumerable<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
     }
 }

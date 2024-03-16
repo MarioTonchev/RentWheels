@@ -50,6 +50,15 @@ namespace RentWheels.Infrastructure.Constants
 			public const int ReviewMaxRating = 10;
 		}
 
+		public static class RentalConstants
+		{
+			public const int RentalMinPickUpLocationLength = 4;
+			public const int RentalMaxPickUpLocationLength = 30;
+			
+			public const int RentalMinDropOffLocationLength = 4;
+			public const int RentalMaxDropOffLocationLength = 30;
+		}
+
 		public const string DateFormat = "dd/MM/yyyy";
 	}
 }

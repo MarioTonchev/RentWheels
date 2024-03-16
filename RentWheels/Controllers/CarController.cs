@@ -27,7 +27,8 @@ namespace RentWheels.Controllers
 		{
             var model = new CarFormViewModel()
             {
-                Engines = await carService.AllEnginesFormAsync()
+                Engines = await carService.AllEnginesFormAsync(),
+                Categories = await carService.AllCategoriesFormAsync()
             };
 
 			return View(model);
@@ -44,6 +45,7 @@ namespace RentWheels.Controllers
             if (!ModelState.IsValid)
             {
                 model.Engines = await carService.AllEnginesFormAsync();
+                model.Categories = await carService.AllCategoriesFormAsync();
                 return View(model);
             }
 

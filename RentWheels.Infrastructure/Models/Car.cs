@@ -49,5 +49,11 @@ namespace RentWheels.Infrastructure.Models
         [Required]
         [ForeignKey(nameof(OwnerId))]
         public IdentityUser Owner { get; set; } = null!;
-	}
+        [Required]
+        [Comment("Shape of the car")]
+        public int CategoryId { get; set; }
+        [Required]
+        [ForeignKey(nameof(CategoryId))]
+        public Category Category { get; set; } = null!;
+    }
 }

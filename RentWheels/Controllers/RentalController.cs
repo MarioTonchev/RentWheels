@@ -4,7 +4,7 @@ namespace RentWheels.Controllers
 {
 	public class RentalController : BaseController
 	{
-		public IActionResult Index()
+		public async Task<IActionResult> Rent()
 		{
 			return View();
 		}

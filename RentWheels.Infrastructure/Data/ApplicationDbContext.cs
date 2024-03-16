@@ -15,6 +15,7 @@ namespace RentWheels.Infrastructure.Data
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			builder.ApplyConfiguration(new EngineConfiguration());
+			builder.ApplyConfiguration(new CategoryConfiguration());
 			builder.ApplyConfiguration(new CarConfiguration());
 
 			builder.Entity<Car>().Property(c => c.Available).HasDefaultValue("true");
@@ -26,6 +27,6 @@ namespace RentWheels.Infrastructure.Data
         public DbSet<Engine> Engines { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Rental> Rentals { get; set; }
-        public DbSet<Location> Locations { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }

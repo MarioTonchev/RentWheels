@@ -42,12 +42,23 @@
 	<div class="mb-3">
 		<label asp-for="@Model.EngineId" class="form-label">Engine</label>
 		<select asp-for="@Model.EngineId" class="form-control" required">
-			@foreach (var engines in Model.Engines)
+			@foreach (var engine in Model.Engines)
 			{
-				<option value="@engines.Id">@engines.Name</option>
+				<option value="@engine.Id">@engine.Name</option>
 			}
 		</select>
 		<span asp-validation-for="@Model.EngineId" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="@Model.CategoryId" class="form-label">Category</label>
+		<select asp-for="@Model.CategoryId" class="form-control" required">
+			@foreach (var category in Model.Categories)
+			{
+				<option value="@category.Id">@category.Name</option>
+			}
+		</select>
+		<span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
 	</div>
 
 	<button type="submit" class="btn btn-primary">Finish</button>

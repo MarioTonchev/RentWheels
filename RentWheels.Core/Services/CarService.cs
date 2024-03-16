@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentWheels.Core.Contracts;
 using RentWheels.Core.VeiwModels.Car;
+using RentWheels.Core.VeiwModels.Category;
 using RentWheels.Core.VeiwModels.Engine;
 using RentWheels.Infrastructure.Common;
 using RentWheels.Infrastructure.Models;
@@ -58,7 +59,17 @@ namespace RentWheels.Core.Services
             }).ToListAsync();
         }
 
-        public async Task<bool> CarExistsAsync(int carId)
+        public async Task<IEnumerable<CategoryViewModel>> AllCategoriesFormAsync()
+        {
+			return await repository.AllAsReadOnly<Category>().Select(e => new CategoryViewModel()
+			{
+				Id = e.Id,
+				Name = e.Name
+			}).ToListAsync();
+		}
+
+
+		public async Task<bool> CarExistsAsync(int carId)
         {
             return await repository.AllAsReadOnly<Car>().AnyAsync(c => c.Id == carId);
         }
@@ -80,7 +91,8 @@ namespace RentWheels.Core.Services
                 EngineId = model.EngineId,
                 PricePerDay = model.PricePerDay,
                 Available = "true",
-                OwnerId = ownerId
+                OwnerId = ownerId,
+                CategoryId = model.CategoryId
             };
 
             await repository.AddAsync(car);
@@ -106,6 +118,7 @@ namespace RentWheels.Core.Services
                 car.ImageUrl = model.ImageUrl;
                 car.Color = model.Color;
                 car.EngineId = model.EngineId;
+                car.CategoryId = model.CategoryId;
 
                 await repository.SaveChangesAsync();
             }
@@ -122,12 +135,14 @@ namespace RentWheels.Core.Services
                     ImageUrl = c.ImageUrl,
                     Color = c.Color,
                     EngineId = c.EngineId,
-                    PricePerDay = c.PricePerDay
+                    PricePerDay = c.PricePerDay,
+                    CategoryId = c.CategoryId
                 }).FirstOrDefaultAsync();
 
             if (car != null)
             {
                 car.Engines = await AllEnginesFormAsync();
+                car.Categories = await AllCategoriesFormAsync();
             }
 
             return car;
