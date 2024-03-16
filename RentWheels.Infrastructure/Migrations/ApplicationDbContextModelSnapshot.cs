@@ -292,7 +292,7 @@ namespace RentWheels.Infrastructure.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Cars", (string)null);
 
                     b.HasComment("Information about the car that can be rented");
 
@@ -347,7 +347,7 @@ namespace RentWheels.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasComment("Shape of the car's coupe");
 
@@ -421,7 +421,7 @@ namespace RentWheels.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Engines");
+                    b.ToTable("Engines", (string)null);
 
                     b.HasComment("Details about the engine of the car");
 
@@ -508,7 +508,7 @@ namespace RentWheels.Infrastructure.Migrations
 
                     b.HasIndex("RenterId");
 
-                    b.ToTable("Rentals");
+                    b.ToTable("Rentals", (string)null);
 
                     b.HasComment("Contains details about the renting of a car by a user");
                 });
@@ -547,7 +547,7 @@ namespace RentWheels.Infrastructure.Migrations
 
                     b.HasIndex("ReviewerId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
 
                     b.HasComment("Reviews posted by the user about the experience with the car");
                 });

@@ -31,11 +31,13 @@
                             <h5 class="card-title">@car.Brand</h5>
                             <p class="card-text">Model: @car.Model</p>
                             <p class="card-text">Year: @car.Year</p>
+                            <a asp-action="Rent" asp-controller="Rental" asp-route-id="@car.Id" class="btn btn-primary">Rent</a>
                         </div>
                     </div>
                 </div>
             }
         </div>
+
         <nav aria-label="Entities Pagination">
             <ul class="pagination justify-content-center">
                 @for (int i = 1; i <= Model.Count(); i++)

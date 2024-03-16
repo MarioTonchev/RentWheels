@@ -21,6 +21,7 @@ namespace RentWheels.Core.Services
         {
             return await repository.AllAsReadOnly<Car>().Select(c => new CarAllViewModel()
             {
+                Id = c.Id,
                 Brand = c.Brand,
                 Model = c.Model,
                 Year = c.Year,
@@ -33,6 +34,7 @@ namespace RentWheels.Core.Services
             return await repository.AllAsReadOnly<Car>().OrderByDescending(c => c.Id)
                 .Select(c => new CarAllViewModel()
                 {
+                    Id = c.Id,
                     Brand = c.Brand,
                     Model = c.Model,
                     Year = c.Year,

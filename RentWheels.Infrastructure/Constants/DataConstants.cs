@@ -59,6 +59,6 @@ namespace RentWheels.Infrastructure.Constants
 			public const int RentalMaxDropOffLocationLength = 30;
 		}
 
-		public const string DateFormat = "dd/MM/yyyy";
+		public const string DateFormated = "dd/MM/yyyy";
 	}
 }

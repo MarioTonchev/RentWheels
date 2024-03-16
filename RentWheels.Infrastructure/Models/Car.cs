@@ -55,5 +55,7 @@ namespace RentWheels.Infrastructure.Models
         [Required]
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; } = null!;
+        public IList<Review> Reviews { get; set; } = new List<Review>();
+        public IList<Rental> Rentals { get; set; } = new List<Rental>();
     }
 }
