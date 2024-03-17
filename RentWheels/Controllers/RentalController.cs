@@ -27,9 +27,9 @@ namespace RentWheels.Controllers
                 return BadRequest();
             }
 
-            if (await rentalService.IsCarRentedBySameUserAsync(id, User.Id()))
+            if (await rentalService.RentalExistsAsync(id, User.Id()))
             {
-                return RedirectToAction("Mine");
+                return RedirectToAction("MyRented");
             }
 
             if (await rentalService.IsCarValidForRentAsync(id, User.Id()) == false)
@@ -72,11 +72,11 @@ namespace RentWheels.Controllers
           
             await rentalService.RentCarAsync(model, id, User.Id(), s, e);
             
-            return RedirectToAction("Mine");
+            return RedirectToAction("MyRented");
         }
 
         [HttpGet]
-        public async Task<IActionResult> Mine()
+        public async Task<IActionResult> MyRented()
         {
             var cars = await rentalService.MyRentedCarsAsync(User.Id());
 
@@ -84,11 +84,24 @@ namespace RentWheels.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> End(int carId)
+        public async Task<IActionResult> End(int id)
         {
-            await rentalService.EndRentAsync(carId, User.Id());
+            if (await rentalService.RentalExistsAsync(id, User.Id()) == false)
+            {
+                return BadRequest();
+            }
 
-            return RedirectToAction("Mine");
+            await rentalService.EndRentAsync(id, User.Id());
+
+            return RedirectToAction("MyRented");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyLended()
+        {
+            var model = await rentalService.MyLendedCarsAsync(User.Id());
+
+            return View(model);
         }
     }
 }

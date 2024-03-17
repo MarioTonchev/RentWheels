@@ -29,19 +29,6 @@ namespace RentWheels.Core.Services
             }).ToListAsync();
         }
 
-        public async Task<IEnumerable<CarAllViewModel>> LastThreeCarsAsync()
-        {
-            return await repository.AllAsReadOnly<Car>().OrderByDescending(c => c.Id)
-                .Select(c => new CarAllViewModel()
-                {
-                    Id = c.Id,
-                    Brand = c.Brand,
-                    Model = c.Model,
-                    Year = c.Year,
-                    ImageUrl = c.ImageUrl
-                }).Take(3).ToListAsync();
-        }
-
         public async Task<IEnumerable<EngineAllViewModel>> AllEnginesAsync()
         {
             return await repository.AllAsReadOnly<Engine>().Select(e => new EngineAllViewModel()
@@ -52,6 +39,7 @@ namespace RentWheels.Core.Services
                 FuelType = e.FuelType,
             }).ToListAsync();
         }
+
         public async Task<IEnumerable<EngineFormViewModel>> AllEnginesFormAsync()
         {
             return await repository.AllAsReadOnly<Engine>().Select(e => new EngineFormViewModel()
@@ -63,22 +51,16 @@ namespace RentWheels.Core.Services
 
         public async Task<IEnumerable<CategoryViewModel>> AllCategoriesFormAsync()
         {
-			return await repository.AllAsReadOnly<Category>().Select(e => new CategoryViewModel()
-			{
-				Id = e.Id,
-				Name = e.Name
-			}).ToListAsync();
-		}
-
-
-		public async Task<bool> CarExistsAsync(int carId)
-        {
-            return await repository.AllAsReadOnly<Car>().AnyAsync(c => c.Id == carId);
+            return await repository.AllAsReadOnly<Category>().Select(e => new CategoryViewModel()
+            {
+                Id = e.Id,
+                Name = e.Name
+            }).ToListAsync();
         }
 
-        public async Task<bool> EngineExistsAsync(int engineId)
+        public async Task<bool> CarExistsAsync(int carId)
         {
-            return await repository.AllAsReadOnly<Engine>().AnyAsync(e => e.Id == engineId);
+            return await repository.AllAsReadOnly<Car>().AnyAsync(c => c.Id == carId);
         }
 
         public async Task<int> CreateAsync(CarFormViewModel model, string ownerId)
@@ -105,7 +87,25 @@ namespace RentWheels.Core.Services
 
         public async Task<CarDetailsViewModel> DetailsAsync(int carId)
         {
-            throw new NotImplementedException();
+            var car = await repository.AllAsReadOnly<Car>().Where(c => c.Id == carId).Include(c => c.Engine).Include(c => c.Category)
+                .FirstOrDefaultAsync();
+
+            var model = new CarDetailsViewModel()
+            {
+                Id = carId,
+                Brand = car.Brand,
+                CarModel = car.Model,
+                Year = car.Year,
+                ImageUrl = car.ImageUrl,
+                Color = car.Color,
+                EngineId = car.EngineId,
+                PricePerDay = car.PricePerDay,
+                Available = car.Available,
+                CategoryName = car.Category.Name,
+                EngineName = car.Engine.Name
+            };
+
+            return model;
         }
 
         public async Task EditAsync(int id, CarFormViewModel model)
@@ -154,6 +154,17 @@ namespace RentWheels.Core.Services
         {
             return await repository.AllAsReadOnly<Car>()
                 .AnyAsync(c => c.Id == carId && c.OwnerId == ownerId);
+        }
+
+        public async Task RemoveCarAsync(int id)
+        {
+            var car = await repository.All<Car>().Where(c => c.Id == id).FirstOrDefaultAsync();
+
+            if (car != null)
+            {
+                repository.Delete(car);
+                await repository.SaveChangesAsync();
+            }
         }
     }
 }

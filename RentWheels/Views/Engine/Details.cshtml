@@ -1,0 +1,23 @@
+﻿@model EngineDetailsViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Engine Details</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">@($"{Model.Name} engine")</h1>
+        <div class="card mt-3">
+            <div class="card-body">
+                <h4 class="card-title">Horsepower:</h4>
+                <p class="card-text">@Model.Horsepower</p>
+                <h4 class="card-title">Cubage:</h4>
+                <p class="card-text">@Model.Cubage</p>
+                <h4 class="card-title">Fuel type:</h4>
+                <p class="card-text">@Model.FuelType</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

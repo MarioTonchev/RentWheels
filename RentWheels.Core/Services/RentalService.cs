@@ -15,9 +15,10 @@ namespace RentWheels.Core.Services
         {
             repository = _repository;
         }
+
         public async Task RentCarAsync(RentCarFormViewModel model, int carId, string renterId, DateTime s, DateTime e)
         {          
-            var car = await repository.AllAsReadOnly<Car>().Where(c => c.Id == carId).FirstOrDefaultAsync();
+            var car = await repository.All<Car>().Where(c => c.Id == carId).FirstOrDefaultAsync();
 
             var rental = new Rental()
             {
@@ -35,6 +36,7 @@ namespace RentWheels.Core.Services
             await repository.AddAsync(rental);
             await repository.SaveChangesAsync();
         }
+
         public async Task<IEnumerable<MyRentedCarsViewModel>> MyRentedCarsAsync(string renterId)
         {
             return await repository.AllAsReadOnly<Rental>().Where(r => r.RenterId == renterId).Select(r => new MyRentedCarsViewModel()
@@ -50,11 +52,12 @@ namespace RentWheels.Core.Services
 
         public async Task EndRentAsync(int carId, string renterId)
         {
-            var rental = await repository.All<Rental>().Where(r => r.CarId == carId && r.RenterId == renterId)
+            var rental = await repository.All<Rental>().Where(r => r.CarId == carId && r.RenterId == renterId).Include(c => c.Car)
                 .FirstOrDefaultAsync();
 
             if (rental != null) 
             {
+                rental.Car.Available = "true";
                 repository.Delete(rental);
                 await repository.SaveChangesAsync();
             }
@@ -72,11 +75,11 @@ namespace RentWheels.Core.Services
             return pricePerDay * days;
         }
 
-        public async Task<bool> IsCarValidForRentAsync(int carId, string ownerId)
+        public async Task<bool> IsCarValidForRentAsync(int carId, string renterId)
         {
             var car = await repository.AllAsReadOnly<Car>().Where(c => c.Id == carId).FirstOrDefaultAsync();
 
-            if (car.OwnerId == ownerId)
+            if (car.OwnerId == renterId)
             {
                 return false;
             }
@@ -94,7 +97,7 @@ namespace RentWheels.Core.Services
             return true;
         }
 
-        public async Task<bool> IsCarRentedBySameUserAsync(int carId, string renterId)
+        public async Task<bool> RentalExistsAsync(int carId, string renterId)
         {
             if (await repository.AllAsReadOnly<Rental>().AnyAsync(r => r.CarId == carId && r.RenterId == renterId))
             {
@@ -102,6 +105,20 @@ namespace RentWheels.Core.Services
             }
 
             return false;
+        }
+
+        public async Task<IEnumerable<MyLendedCarsViewModel>> MyLendedCarsAsync(string ownerId)
+        {
+            var cars = await repository.AllAsReadOnly<Car>().Where(c => c.OwnerId == ownerId).
+                Select(c => new MyLendedCarsViewModel()
+                {
+                    Id = c.Id,
+                    Brand = c.Brand,
+                    CarModel = c.Model,
+                    Available = c.Available
+                }).ToListAsync();
+
+            return cars;
         }
     }
 }

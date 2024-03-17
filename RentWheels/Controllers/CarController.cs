@@ -98,8 +98,7 @@ namespace RentWheels.Controllers
 
             await carService.EditAsync(id, model);
 
-            //To do: Redirect to other page.
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("MyLended", "Rental");
         }
 
         [HttpGet]
@@ -115,5 +114,22 @@ namespace RentWheels.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Remove(int id)
+        {
+            if (await carService.CarExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (await carService.HasOwnerWithIdAsync(id, User.Id()) == false)
+            {
+                return Unauthorized();
+            }
+
+            await carService.RemoveCarAsync(id);
+
+            return RedirectToAction("MyLended", "Rental");
+        }
     }
 }
