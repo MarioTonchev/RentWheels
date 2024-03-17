@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RentWheels.Core.Contracts;
 using RentWheels.Models;
 using System.Diagnostics;
 
@@ -9,13 +8,10 @@ namespace RentWheels.Controllers
 	public class HomeController : BaseController
 	{
 		private readonly ILogger<HomeController> _logger;
-		private readonly ICarService carService;
 
-		public HomeController(ILogger<HomeController> logger
-			,ICarService _carService)
+		public HomeController(ILogger<HomeController> logger)
 		{
 			_logger = logger;
-			carService = _carService;
 		}
 
 		[AllowAnonymous]

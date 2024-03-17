@@ -7,11 +7,14 @@ namespace RentWheels.Controllers
 {
 	public class CarController : BaseController
 	{
-		private ICarService carService;
+		private readonly ICarService carService;
+        private readonly IEngineService engineService;
 
-        public CarController(ICarService _carService)
+        public CarController(ICarService _carService,
+            IEngineService _engineService)
         {
             carService = _carService;
+            engineService = _engineService;
         }
 
         [HttpGet]
@@ -37,7 +40,7 @@ namespace RentWheels.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CarFormViewModel model)
         {
-            if (await carService.EngineExistsAsync(model.EngineId) == false)
+            if (await engineService.EngineExistsAsync(model.EngineId) == false)
             {
                 ModelState.AddModelError(nameof(model.EngineId), "Selected engine does not exit!");
             }
@@ -85,7 +88,7 @@ namespace RentWheels.Controllers
                 return Unauthorized();
             }
 
-            if (await carService.EngineExistsAsync(model.EngineId) == false)
+            if (await engineService.EngineExistsAsync(model.EngineId) == false)
             {
                 ModelState.AddModelError(nameof(model.EngineId), "Selected engine does not exist.");
 
@@ -98,5 +101,19 @@ namespace RentWheels.Controllers
             //To do: Redirect to other page.
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            if (await carService.CarExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            var model = await carService.DetailsAsync(id);
+
+            return View(model);
+        }
+
     }
 }
