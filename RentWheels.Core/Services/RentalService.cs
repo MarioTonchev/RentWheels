@@ -72,11 +72,11 @@ namespace RentWheels.Core.Services
             return pricePerDay * days;
         }
 
-        public async Task<bool> IsCarValidForRentAsync(int carId)
+        public async Task<bool> IsCarValidForRentAsync(int carId, string ownerId)
         {
             var car = await repository.AllAsReadOnly<Car>().Where(c => c.Id == carId).FirstOrDefaultAsync();
 
-            if (car == null)
+            if (car.OwnerId == ownerId)
             {
                 return false;
             }

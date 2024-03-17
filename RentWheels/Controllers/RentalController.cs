@@ -10,21 +10,29 @@ namespace RentWheels.Controllers
     public class RentalController : BaseController
     {
         private readonly IRentalService rentalService;
+        private readonly ICarService carService;
 
-        public RentalController(IRentalService _rentalService)
+        public RentalController(IRentalService _rentalService, ICarService _carService)
         {
             rentalService = _rentalService;
+            carService = _carService;
+
         }
 
         [HttpGet]
         public async Task<IActionResult> Rent(int id)
         {
+            if (await carService.CarExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
             if (await rentalService.IsCarRentedBySameUserAsync(id, User.Id()))
             {
                 return RedirectToAction("Mine");
             }
 
-            if (await rentalService.IsCarValidForRentAsync(id) == false)
+            if (await rentalService.IsCarValidForRentAsync(id, User.Id()) == false)
             {
                 return RedirectToAction("All", "Car");
             }
