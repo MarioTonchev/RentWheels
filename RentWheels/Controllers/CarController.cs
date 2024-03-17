@@ -51,7 +51,7 @@ namespace RentWheels.Controllers
 
             await carService.CreateAsync(model, User.Id());
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("All");
         }
 
         [HttpGet]
