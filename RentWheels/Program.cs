@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using RentWheels.ModelBinders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ builder.Services.AddApplicationIdentity(builder.Configuration);
 builder.Services.AddControllersWithViews(opt =>
 {
 	opt.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+	opt.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
 });
 
 builder.Services.AddApplicationServices();
