@@ -26,7 +26,8 @@ namespace RentWheels.Core.Services
                 Brand = c.Brand,
                 CarModel = c.Model,
                 Year = c.Year,
-                ImageUrl = c.ImageUrl
+                ImageUrl = c.ImageUrl,
+                OwnerId = c.OwnerId
             }).ToListAsync();
         }
 
@@ -207,7 +208,8 @@ namespace RentWheels.Core.Services
                     Brand = c.Brand,
                     CarModel = c.Model,
                     ImageUrl = c.ImageUrl,
-                    Year = c.Year
+                    Year = c.Year,
+                    OwnerId = c.OwnerId
                 })
 				.ToListAsync();
 

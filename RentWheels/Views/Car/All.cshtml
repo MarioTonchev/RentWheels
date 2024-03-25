@@ -70,8 +70,11 @@
 							<p class="card-text">Model: @car.CarModel</p>
 							<p class="card-text">Year: @car.Year</p>
 							<div class="d-flex justify-content-between">
-								<a asp-action="Rent" asp-controller="Rental" asp-route-id="@car.Id" class="btn btn-success">Rent</a>
 								<a asp-action="Details" asp-controller="Car" asp-route-id="@car.Id" class="btn btn-primary">Details</a>
+								@if (car.OwnerId != User.Id())
+								{
+									<a asp-action="Rent" asp-controller="Rental" asp-route-id="@car.Id" class="btn btn-success">Rent</a>
+								}
 							</div>
 						</div>
 					</div>
@@ -79,13 +82,13 @@
 			}
 		</div>
 		<nav aria-label="Entities Pagination">
-			<ul class="pagination justify-content-center">				
+			<ul class="pagination justify-content-center">
 				@for (int i = 1; i <= Model.TotalPages; i++)
 				{
 					<li class="page-item @(i == Model.CurrentPage ? "active" : "")">
 						<a class="page-link" href="?currentpage=@i&category=@Model.Category&searchTerm=@Model.SearchTerm&sorting=@Model.Sorting">@i</a>
 					</li>
-				}				
+				}
 			</ul>
 		</nav>
 	</div>
