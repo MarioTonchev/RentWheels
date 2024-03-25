@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentWheels.Core.Contracts;
+using RentWheels.Core.Enumerations;
 using RentWheels.Core.VeiwModels.Car;
 using RentWheels.Core.VeiwModels.Category;
 using RentWheels.Core.VeiwModels.Engine;
@@ -23,7 +24,7 @@ namespace RentWheels.Core.Services
             {
                 Id = c.Id,
                 Brand = c.Brand,
-                Model = c.Model,
+                CarModel = c.Model,
                 Year = c.Year,
                 ImageUrl = c.ImageUrl
             }).ToListAsync();
@@ -101,8 +102,7 @@ namespace RentWheels.Core.Services
                 EngineId = car.EngineId,
                 PricePerDay = car.PricePerDay,
                 Available = car.Available,
-                CategoryName = car.Category.Name,
-                EngineName = car.Engine.Name
+                CategoryName = car.Category.Name
             };
 
             return model;
@@ -166,5 +166,65 @@ namespace RentWheels.Core.Services
                 await repository.SaveChangesAsync();
             }
         }
-    }
+
+		public async Task<CarQueryViewModel> AllAsync(string? cateogry = null, string? searchTerm = null, CarSorting sorting = CarSorting.Newest, int currentPage = 1, int carPerPage = 4)
+		{
+            var cars = repository.AllAsReadOnly<Car>();
+
+            if (cateogry != null)
+            {
+                cars = cars.Where(c => c.Category.Name == cateogry);
+            }
+
+            if (searchTerm != null)
+            {
+                string normalizedSearchTerm = searchTerm.ToLower();
+                cars = cars.Where(c => c.Brand.ToLower().Contains(normalizedSearchTerm) || c.Model.ToLower().Contains(normalizedSearchTerm));
+            }
+
+            switch (sorting)
+            {
+                case CarSorting.Year:
+                    cars = cars.OrderByDescending(c => c.Year);
+                    break;
+                case CarSorting.PriceAscending:
+                    cars = cars.OrderBy(c => c.PricePerDay);
+                    break;
+                case CarSorting.PriceDescending:
+                    cars = cars.OrderByDescending(c => c.PricePerDay);
+                    break;
+                default:
+                    cars = cars.OrderByDescending(c => c.Id);
+                    break;
+            }
+
+			var carsPaginated = await cars
+				.Skip((currentPage - 1) * carPerPage)
+				.Take(carPerPage)
+				.Select(c => new CarAllViewModel()
+                {
+                    Id = c.Id,
+                    Brand = c.Brand,
+                    CarModel = c.Model,
+                    ImageUrl = c.ImageUrl,
+                    Year = c.Year
+                })
+				.ToListAsync();
+
+			int totalCars = await cars.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalCars / (double)carPerPage);
+
+			return new CarQueryViewModel()
+			{
+				Cars = carsPaginated,
+				TotalCarsCount = totalCars,
+                TotalPages = totalPages
+			};
+		}
+
+		public async Task<IEnumerable<string>> AllCategoriesNamesAsync()
+		{
+            return await repository.AllAsReadOnly<Category>().Select(c => c.Name).ToListAsync();
+		}
+	}
 }

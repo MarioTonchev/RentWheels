@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RentWheels.Core.Contracts;
 using RentWheels.Core.VeiwModels.Car;
 using System.Security.Claims;
@@ -17,12 +18,23 @@ namespace RentWheels.Controllers
             engineService = _engineService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All([FromQuery] AllCarsQueryViewModel model)
         {
-            var cars = await carService.AllCarsAsync();
+            var cars = await carService.AllAsync(
+                model.Category,
+                model.SearchTerm,
+                model.Sorting,
+                model.CurrentPage,
+                model.CarsPerPage);
 
-            return View(cars);
+            model.TotalCarsCount = cars.TotalCarsCount;
+            model.Cars = cars.Cars;
+            model.TotalPages = cars.TotalPages;
+            model.Categories = await carService.AllCategoriesNamesAsync();
+
+            return View(model);
         }
 
         [HttpGet]
