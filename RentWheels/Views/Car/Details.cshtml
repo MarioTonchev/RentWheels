@@ -3,26 +3,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Car Details</title>
+	<title>Car Details</title>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center">@($"{Model.Brand} {Model.CarModel}")</h1>
-        <div class="card mt-3">
-            <div class="card-body">
-                <h4 class="card-title">Year:</h4>
-                <p class="card-text">@Model.Year</p>
-                <h4 class="card-title">Color:</h4>
-                <p class="card-text">@Model.Color</p>
-                <h4 class="card-title">Category:</h4>
-                <p class="card-text">@Model.CategoryName</p>
-                <h4 class="card-title">Price per day:</h4>
-                <p class="card-text">@Model.PricePerDay</p>
-                <h4 class="card-title">Engine:</h4>
-                <p class="card-text">@Model.EngineName</p>
-                <p class="text-center"><img src="@Model.ImageUrl" class="img-fluid" width="1000" /></p>
-            </div>
-        </div>
-    </div>
+	<div class="container mt-5">
+		<h1 class="text-center">@($"{Model.Brand} {Model.CarModel}")</h1>
+		<div class="card mt-3">
+			<div class="row no-gutters">
+				<div class="col-md-6">
+					<div class="card-body">
+						<h4 class="card-title">Year:</h4>
+						<p class="card-text">@Model.Year</p>
+						<h4 class="card-title">Color:</h4>
+						<p class="card-text">@Model.Color</p>
+						<h4 class="card-title">Category:</h4>
+						<p class="card-text">@Model.CategoryName</p>
+						<h4 class="card-title">Price per day:</h4>
+						<p class="card-text">@Model.PricePerDay</p>
+						<h4><a asp-action="Details" asp-controller="Engine" asp-route-id="@Model.EngineId" class="btn btn-primary">Engine Details</a></h4>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<img src="@Model.ImageUrl" class="img-fluid" width="700" />
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
