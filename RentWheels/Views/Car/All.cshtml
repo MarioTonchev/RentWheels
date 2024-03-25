@@ -1,56 +1,97 @@
 ﻿@using System.Security.Claims
-@model IEnumerable<CarAllViewModel>
+@model AllCarsQueryViewModel
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Entities</title>
-    <style>
-        .entity-card {
-            margin-bottom: 20px;
-            width: 400px; /* Adjust the width of the card  */
-        }
+	<meta name="viewport" content="width=device-width" />
+	<title>Entities</title>
+	<style>
+		.entity-card {
+			margin-bottom: 20px;
+			width: 400px;
+		}
 
-            .entity-card img {
-                max-width: 100%;
-                height: auto;
-            }
-    </style>
+			.entity-card img {
+				max-width: 100%;
+				height: auto;
+			}
+	</style>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            @foreach (var car in Model)
-            {
-                <div class="col-md-6">
-                    <div class="card entity-card">
-                        <img class="card-img-top" src="@car.ImageUrl" alt="Entity Image">
-                        <div class="card-body">
-                            <h5 class="card-title">@car.Brand</h5>
-                            <p class="card-text">Model: @car.Model</p>
-                            <p class="card-text">Year: @car.Year</p>
-                            <a asp-action="Rent" asp-controller="Rental" asp-route-id="@car.Id" class="btn btn-primary">Rent</a>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
+	<form method="get">
+		<div class="row">
+			<div class="form-group col-md-3 d-flex justify-content-between">
+				<div class="form-group">
+					<label asp-for="Category"></label>
+					<select asp-for="Category" class="form-control">
+						<option value="">All</option>
+						@foreach (var category in Model.Categories)
+						{
+							<option value="@category">@category</option>
+						}
+					</select>
+				</div>
+			</div>
 
-        <nav aria-label="Entities Pagination">
-            <ul class="pagination justify-content-center">
-                @for (int i = 1; i <= Model.Count(); i++)
-                {
-                    <li class="page-item @(i == 1 ? "active" : "")">
-                        <a class="page-link" href="?page=@i">@i</a>
-                    </li>
-                }
-            </ul>
-        </nav>
-    </div>
+			<div class="form-group col-md-3">
+				<label asp-for="SearchTerm"></label>
+				<input asp-for="SearchTerm" class="form-control">
+			</div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+			<div class="form-group col-md-3">
+				<div class="form-group">
+					<label asp-for="Sorting"></label>
+					<select asp-for="Sorting" class="form-control">
+						<option value="0">Newest offers</option>
+						<option value="1">Year</option>
+						<option value="2">Price Ascending</option>
+						<option value="3">Price Descending</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="col-md-3">
+				<div class="form-group mt-4 p-2">
+					<input type="submit" value="Search" class="btn btn-primary" />
+				</div>
+			</div>
+		</div>
+	</form>
+	<div class="container">
+		<div class="row">
+			@foreach (var car in Model.Cars)
+			{
+				<div class="col-md-6">
+					<div class="card entity-card">
+						<img class="card-img-top" src="@car.ImageUrl" alt="Entity Image">
+						<div class="card-body">
+							<h5 class="card-title">@car.Brand</h5>
+							<p class="card-text">Model: @car.CarModel</p>
+							<p class="card-text">Year: @car.Year</p>
+							<div class="d-flex justify-content-between">
+								<a asp-action="Rent" asp-controller="Rental" asp-route-id="@car.Id" class="btn btn-success">Rent</a>
+								<a asp-action="Details" asp-controller="Car" asp-route-id="@car.Id" class="btn btn-primary">Details</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+		<nav aria-label="Entities Pagination">
+			<ul class="pagination justify-content-center">				
+				@for (int i = 1; i <= Model.TotalPages; i++)
+				{
+					<li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+						<a class="page-link" href="?currentpage=@i&category=@Model.Category&searchTerm=@Model.SearchTerm&sorting=@Model.Sorting">@i</a>
+					</li>
+				}				
+			</ul>
+		</nav>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
