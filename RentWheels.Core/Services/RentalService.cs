@@ -63,18 +63,6 @@ namespace RentWheels.Core.Services
             }
         }
 
-        private decimal CalcualteTotalPrice(DateTime s, DateTime e, decimal pricePerDay)
-        {
-            int days = Math.Abs((e - s).Days);
-
-            if (days == 0)
-            {
-                return pricePerDay;
-            }
-
-            return pricePerDay * days;
-        }
-
         public async Task<bool> IsCarValidForRentAsync(int carId, string renterId)
         {
             var car = await repository.AllAsReadOnly<Car>().Where(c => c.Id == carId).FirstOrDefaultAsync();
@@ -119,6 +107,21 @@ namespace RentWheels.Core.Services
                 }).ToListAsync();
 
             return cars;
+        }
+        private decimal CalcualteTotalPrice(DateTime s, DateTime e, decimal pricePerDay)
+        {
+            decimal result = pricePerDay;
+
+            int days = Math.Abs((e - s).Days);
+
+            if (days == 0)
+            {
+                return result;
+            }
+
+            result += pricePerDay * days;
+
+            return result;
         }
     }
 }
