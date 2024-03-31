@@ -8,5 +8,7 @@
         public string Start { get; set; } = string.Empty;
         public string End { get; set; } = string.Empty;
         public decimal TotalPrice { get; set; }
+        public string PickUp { get; set; } = string.Empty;
+        public string DropOff { get; set; } = string.Empty;
     }
 }

@@ -39,14 +39,16 @@ namespace RentWheels.Core.Services
 
         public async Task<IEnumerable<MyRentedCarsViewModel>> MyRentedCarsAsync(string renterId)
         {
-            return await repository.AllAsReadOnly<Rental>().Where(r => r.RenterId == renterId).Select(r => new MyRentedCarsViewModel()
+            return await repository.AllAsReadOnly<Rental>().Where(r => r.RenterId == renterId).Select(c => new MyRentedCarsViewModel()
             {
-                Id = r.CarId,
-                Brand = r.Car.Brand,
-                CarModel = r.Car.Model,
-                Start = r.Start.ToString(DateFormated),
-                End = r.End.ToString(DateFormated),
-                TotalPrice = r.TotalPrice
+                Id = c.CarId,
+                Brand = c.Car.Brand,
+                CarModel = c.Car.Model,
+                Start = c.Start.ToString(DateFormated),
+                End = c.End.ToString(DateFormated),
+                TotalPrice = c.TotalPrice,
+                PickUp = c.PickUpLocation,
+                DropOff = c.DropOffLocation
             }).ToListAsync();
         }
 

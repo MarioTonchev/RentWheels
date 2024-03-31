@@ -16,6 +16,7 @@ namespace RentWheels.Core.VeiwModels.Car
         [Required(ErrorMessage = RequiredMessage)]
         [StringLength(CarMaxModelLength, MinimumLength = CarMinModelLength
             , ErrorMessage = StringLengthMessage)]
+        [Display(Name = "Model")]
         public string CarModel { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredMessage)]
@@ -31,9 +32,11 @@ namespace RentWheels.Core.VeiwModels.Car
         [Required(ErrorMessage = RequiredMessage)]
         [Range(CarMinPricePerDay, CarMaxPricePerDay
             , ErrorMessage = RangeMessage)]
+        [Display(Name = "Price Per Day")]
         public decimal PricePerDay { get; set; }
 
         [Required(ErrorMessage = RequiredMessage)]
+        [Display(Name = "Image URL")]
         public string ImageUrl { get; set; } = string.Empty;
 
         [Required(ErrorMessage = RequiredMessage)]

@@ -7,6 +7,8 @@
             <th>Rented on:</th>
             <th>Rent ends on:</th>
             <th>Total price</th>
+            <th>Pick Up Location</th>
+            <th>Drop Off Location</th>
             <th></th>
         </tr>
     </thead>
@@ -18,6 +20,8 @@
                 <td>@car.Start</td>
                 <td>@car.End</td>
                 <td>@car.TotalPrice</td>
+                <td>@car.PickUp</td>
+                <td>@car.DropOff</td>
                 <td>
                     <form asp-action="End" asp-controller="Rental" asp-route-id="@car.Id" method="post">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to end your rent?');">End rent</button>

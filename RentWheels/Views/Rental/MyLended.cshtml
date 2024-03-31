@@ -7,6 +7,7 @@
             <th>Available:</th>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -15,12 +16,13 @@
             <tr>
                 <td>@($"{car.Brand} {car.CarModel}")</td>
                 <td>@car.Available</td>
+                <td><a asp-action="Edit" asp-controller="Car" asp-route-id="@car.Id" class="btn btn-primary">Edit</a></td>
+                <td><a asp-action="Details" asp-controller="Car" asp-route-id="@car.Id" class="btn btn-secondary">Car Details</a></td>
                 <td>
                     <form asp-action="Remove" asp-controller="Car" asp-route-id="@car.Id" method="post">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this car?');">Remove car</button>
                     </form>
                 </td>
-                <td><a asp-action="Edit" asp-controller="Car" asp-route-id="@car.Id" class="btn btn-primary">Edit</a></td>
             </tr>
         }
     </tbody>
