@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RentWheels.Core.Contracts;
-using RentWheels.Core.VeiwModels.Rental;
+using RentWheels.Core.ViewModels.Rental;
 using System.Globalization;
 using System.Security.Claims;
 using static RentWheels.Infrastructure.Constants.DataConstants;

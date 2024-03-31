@@ -1,10 +1,10 @@
-﻿using RentWheels.Core.VeiwModels.Engine;
+﻿using RentWheels.Core.ViewModels.Engine;
 using System.ComponentModel.DataAnnotations;
 using static RentWheels.Infrastructure.Constants.DataConstants.CarConstants;
 using static RentWheels.Core.Constants.MessageConstants;
-using RentWheels.Core.VeiwModels.Category;
+using RentWheels.Core.ViewModels.Category;
 
-namespace RentWheels.Core.VeiwModels.Car
+namespace RentWheels.Core.ViewModels.Car
 {
 	public class CarFormViewModel
 	{

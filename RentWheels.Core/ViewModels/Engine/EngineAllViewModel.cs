@@ -2,7 +2,7 @@
 using static RentWheels.Infrastructure.Constants.DataConstants.EngineConstants;
 using static RentWheels.Core.Constants.MessageConstants;
 
-namespace RentWheels.Core.VeiwModels.Engine
+namespace RentWheels.Core.ViewModels.Engine
 {
     public class EngineAllViewModel
     {

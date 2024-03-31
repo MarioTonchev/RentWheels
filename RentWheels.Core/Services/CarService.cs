@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentWheels.Core.Contracts;
 using RentWheels.Core.Enumerations;
-using RentWheels.Core.VeiwModels.Car;
-using RentWheels.Core.VeiwModels.Category;
-using RentWheels.Core.VeiwModels.Engine;
+using RentWheels.Core.ViewModels.Car;
+using RentWheels.Core.ViewModels.Category;
+using RentWheels.Core.ViewModels.Engine;
 using RentWheels.Infrastructure.Common;
 using RentWheels.Infrastructure.Models;
 

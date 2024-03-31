@@ -1,4 +1,4 @@
-﻿using RentWheels.Core.VeiwModels.Engine;
+﻿using RentWheels.Core.ViewModels.Engine;
 
 namespace RentWheels.Core.Contracts
 {

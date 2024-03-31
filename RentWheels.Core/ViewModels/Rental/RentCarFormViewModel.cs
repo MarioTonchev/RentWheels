@@ -2,7 +2,7 @@
 using static RentWheels.Core.Constants.MessageConstants;
 using static RentWheels.Infrastructure.Constants.DataConstants.RentalConstants;
 
-namespace RentWheels.Core.VeiwModels.Rental
+namespace RentWheels.Core.ViewModels.Rental
 {
     public class RentCarFormViewModel
     {

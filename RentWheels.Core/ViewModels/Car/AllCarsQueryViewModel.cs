@@ -1,7 +1,7 @@
 ﻿using RentWheels.Core.Enumerations;
 using System.ComponentModel.DataAnnotations;
 
-namespace RentWheels.Core.VeiwModels.Car
+namespace RentWheels.Core.ViewModels.Car
 {
 	public class AllCarsQueryViewModel
 	{

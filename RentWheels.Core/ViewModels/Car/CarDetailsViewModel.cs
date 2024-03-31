@@ -1,4 +1,4 @@
-﻿namespace RentWheels.Core.VeiwModels.Car
+﻿namespace RentWheels.Core.ViewModels.Car
 {
 	public class CarDetailsViewModel
 	{

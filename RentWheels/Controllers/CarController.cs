@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentWheels.Core.Contracts;
-using RentWheels.Core.VeiwModels.Car;
+using RentWheels.Core.ViewModels.Car;
 using System.Security.Claims;
 
 namespace RentWheels.Controllers

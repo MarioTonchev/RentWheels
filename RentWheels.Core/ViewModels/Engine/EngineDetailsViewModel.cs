@@ -1,4 +1,4 @@
-﻿namespace RentWheels.Core.VeiwModels.Engine
+﻿namespace RentWheels.Core.ViewModels.Engine
 {
     public class EngineDetailsViewModel
     {

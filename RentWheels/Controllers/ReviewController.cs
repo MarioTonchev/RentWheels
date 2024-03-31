@@ -4,7 +4,8 @@ namespace RentWheels.Controllers
 {
 	public class ReviewController : BaseController
 	{
-		public IActionResult Index()
+		[HttpGet]
+		public async Task<IActionResult> All()
 		{
 			return View();
 		}

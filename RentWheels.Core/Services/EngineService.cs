@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentWheels.Core.Contracts;
-using RentWheels.Core.VeiwModels.Engine;
+using RentWheels.Core.ViewModels.Engine;
 using RentWheels.Infrastructure.Common;
 using RentWheels.Infrastructure.Models;
 

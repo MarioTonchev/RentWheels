@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentWheels.Core.Contracts;
-using RentWheels.Core.VeiwModels.Rental;
+using RentWheels.Core.ViewModels.Rental;
 using RentWheels.Infrastructure.Common;
 using RentWheels.Infrastructure.Models;
 using static RentWheels.Infrastructure.Constants.DataConstants;
