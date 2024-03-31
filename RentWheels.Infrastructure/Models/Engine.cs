@@ -24,6 +24,6 @@ namespace RentWheels.Infrastructure.Models
         [StringLength(EngineMaxFuelTypeLength)]
         [Comment("Fuel type of the engine")]
         public string FuelType { get; set; } = string.Empty;
-        public IEnumerable<Car> Cars { get; set; } = new List<Car>();
+        public IList<Car> Cars { get; set; } = new List<Car>();
     }
 }

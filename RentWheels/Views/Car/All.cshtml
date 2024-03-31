@@ -71,9 +71,14 @@
 							<p class="card-text">Year: @car.Year</p>
 							<div class="d-flex justify-content-between">
 								<a asp-action="Details" asp-controller="Car" asp-route-id="@car.Id" class="btn btn-primary">Details</a>
+								<a asp-action="AllByCar" asp-controller="Review" asp-route-id="@car.Id" class="btn btn-secondary">Reviews</a>
 								@if (car.OwnerId != User.Id())
 								{
 									<a asp-action="Rent" asp-controller="Rental" asp-route-id="@car.Id" class="btn btn-success">Rent</a>
+								}
+								else
+								{
+									<btn class ="btn btn-success disabled">Rent</btn>
 								}
 							</div>
 						</div>

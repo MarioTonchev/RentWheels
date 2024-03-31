@@ -1,0 +1,56 @@
+﻿@model IEnumerable<ReviewAllViewModel>
+
+@{
+	ViewData["Title"] = "Car Reviews";
+}
+
+<style>
+	.review-container {
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		padding: 10px;
+		margin-bottom: 15px;
+		box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+	}
+
+		.review-container h3 {
+			margin-top: 0;
+			margin-bottom: 5px;
+			color: #333;
+		}
+
+		.review-container p {
+			margin: 0;
+		}
+
+	.review-rating {
+		color: #FFC107;
+		font-size: 18px;
+		margin-bottom: 5px;
+	}
+</style>
+
+
+@if (Model.Any())
+{
+	@foreach (var review in Model)
+	{
+		<div class="review-container">
+			<p class="review-rating">Rating: @review.Rating</p>
+			<p>@review.Comment</p>
+		</div>
+	}
+	<div class="text-center">
+		<a asp-action="Add" asp-controller="Review" asp-route-id="@Convert.ToInt32(ViewData["carId"])" class="btn btn-success">Add review</a>
+	</div>
+
+}
+else
+{
+	<div class="container d-flex justify-content-center align-items-center vh-100">
+		<div class="text-center" style="margin-bottom: 200px;">
+			<h1>There are not any reviews for this car yet!</h1>
+			<a asp-action="Add" asp-controller="Review" asp-route-id="@Convert.ToInt32(ViewData["carId"])" class="btn btn-success">Add the first one!</a>
+		</div>
+	</div>
+}
