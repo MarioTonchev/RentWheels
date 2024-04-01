@@ -22,7 +22,8 @@ namespace RentWheels.Core.Services
 				Id = r.Id,
 				Rating = r.Rating,
 				Comment = r.Comment,
-				CarId = r.CarId
+				CarId = r.CarId,
+				ReviewerId = r.ReviewerId
 			}).ToListAsync();
 
 			return reviews;
@@ -68,6 +69,29 @@ namespace RentWheels.Core.Services
 			var review = await repository.AllAsReadOnly<Review>().Where(r => r.Id == reviewId).FirstOrDefaultAsync();
 			
 			return review.CarId;			
+		}
+
+		public async Task<ReviewFormViewModel> CreateReviewFormViewModelByIdAsync(int id)
+		{
+			return await repository.AllAsReadOnly<Review>().Where(r => r.Id == id).Select(r => new ReviewFormViewModel()
+			{
+				Rating = r.Rating,
+				Comment = r.Comment,
+				CarId = r.CarId
+			}).FirstOrDefaultAsync();
+		}
+
+		public async Task EditAsync(int id, ReviewFormViewModel model)
+		{
+			var reviewToEdit = await repository.All<Review>().Where(r => r.Id == id).FirstOrDefaultAsync();
+
+			if (reviewToEdit != null)
+			{
+				reviewToEdit.Rating = model.Rating;
+				reviewToEdit.Comment = model.Comment;
+
+				await repository.SaveChangesAsync();
+			}
 		}
 	}
 }

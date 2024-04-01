@@ -76,5 +76,41 @@ namespace RentWheels.Controllers
 
 			return RedirectToAction("AllByCar", new { id = carId });
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> Edit(int id)
+		{
+			if (await reviewService.ReviewExistsAsync(id) == false)
+			{
+				return BadRequest();
+			}
+
+			if (await reviewService.HasReviewerWithIdAsync(id, User.Id()) == false)
+			{
+				return Unauthorized();
+			}
+
+			var model = await reviewService.CreateReviewFormViewModelByIdAsync(id);
+
+			return View(model);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(int id, ReviewFormViewModel model)
+		{
+			if (await reviewService.ReviewExistsAsync(id) == false)
+			{
+				return BadRequest();
+			}
+
+			if (await reviewService.HasReviewerWithIdAsync(id, User.Id()) == false)
+			{
+				return Unauthorized();
+			}
+
+			await reviewService.EditAsync(id, model);
+
+			return RedirectToAction("AllByCar", new { id = model.CarId });
+		}
 	}
 }

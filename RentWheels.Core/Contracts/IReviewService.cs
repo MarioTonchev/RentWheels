@@ -15,5 +15,9 @@ namespace RentWheels.Core.Contracts
         Task RemoveReviewAsync(int reviewId);
 
         Task<int> GetReviewCarIdAsync(int reviewId);
+
+        Task<ReviewFormViewModel> CreateReviewFormViewModelByIdAsync(int id);
+
+        Task EditAsync(int id, ReviewFormViewModel model);
 	}
 }
