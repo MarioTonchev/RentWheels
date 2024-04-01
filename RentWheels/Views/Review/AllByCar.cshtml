@@ -36,8 +36,17 @@
 	@foreach (var review in Model)
 	{
 		<div class="review-container">
-			<p class="review-rating">Rating: @review.Rating</p>
-			<p>@review.Comment</p>
+			<div class="d-flex justify-content-between align-items-start">
+				<p class="review-rating">Rating: @review.Rating</p>
+				<form id="removeForm" asp-action="Remove" asp-controller="Review" asp-route-id="@review.Id" method="post">
+					<button type="submit" class="btn" onclick="return confirm('Are you sure you want to delete your review?');">
+						<i class="fas fa-trash" style="color: red"></i>
+					</button>
+				</form>
+			</div>
+			<div>
+				<p>@review.Comment</p>
+			</div>
 		</div>
 	}
 	<div class="text-center">

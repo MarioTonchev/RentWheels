@@ -35,6 +35,7 @@ namespace RentWheels.Core.Contracts
 		Task<CarFormViewModel> CreateCarFormViewModelByIdAsync(int id);
 
 		Task<bool> HasOwnerWithIdAsync(int carId, string ownerId);
+
 		Task RemoveCarAsync(int id);
 	}
 }
