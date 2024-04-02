@@ -34,8 +34,13 @@ namespace RentWheels.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult Add(int id)
+		public async Task<IActionResult> Add(int id)
 		{
+			if (await carService.HasOwnerWithIdAsync(id, User.Id()) == true)
+			{
+				return RedirectToAction("AllByCar", new { id = id});
+			}
+
 			var model = new ReviewFormViewModel()
 			{
 				CarId = id
@@ -47,6 +52,11 @@ namespace RentWheels.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Add(ReviewFormViewModel model)
 		{
+			if (await carService.HasOwnerWithIdAsync(model.CarId, User.Id()) == true)
+			{
+				return RedirectToAction("AllByCar", new { id = model.CarId });
+			}
+
 			if (!ModelState.IsValid)
 			{
 				return View(model);
