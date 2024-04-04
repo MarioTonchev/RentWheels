@@ -7,5 +7,9 @@ namespace RentWheels.Core.Contracts
         Task<bool> EngineExistsAsync(int engineId);
 
         Task<EngineDetailsViewModel> DetailsAsync(int id);
-    }
+
+		Task<IEnumerable<EngineAllViewModel>> AllEnginesAsync();
+
+		Task<IEnumerable<EngineFormViewModel>> AllEnginesFormAsync();
+	}
 }

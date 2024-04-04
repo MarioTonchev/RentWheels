@@ -16,14 +16,6 @@ namespace RentWheels.Core.Contracts
 
 		Task<IEnumerable<CarAllViewModel>> AllCarsAsync();
 
-		Task<IEnumerable<EngineAllViewModel>> AllEnginesAsync();
-
-		Task<IEnumerable<EngineFormViewModel>> AllEnginesFormAsync();
-
-		Task<IEnumerable<CategoryViewModel>> AllCategoriesFormAsync();
-
-		Task<IEnumerable<string>> AllCategoriesNamesAsync();
-
         Task<bool> CarExistsAsync(int carId);
 		
 		Task<int> CreateAsync(CarFormViewModel model, string ownerId);

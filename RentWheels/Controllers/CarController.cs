@@ -10,12 +10,15 @@ namespace RentWheels.Controllers
 	{
 		private readonly ICarService carService;
         private readonly IEngineService engineService;
+        private readonly ICategoryService categoryService;
 
         public CarController(ICarService _carService,
-            IEngineService _engineService)
+            IEngineService _engineService,
+            ICategoryService _categoryService)
         {
             carService = _carService;
             engineService = _engineService;
+            categoryService = _categoryService;
         }
 
         [AllowAnonymous]
@@ -32,7 +35,7 @@ namespace RentWheels.Controllers
             model.TotalCarsCount = cars.TotalCarsCount;
             model.Cars = cars.Cars;
             model.TotalPages = cars.TotalPages;
-            model.Categories = await carService.AllCategoriesNamesAsync();
+            model.Categories = await categoryService.AllCategoriesNamesAsync();
 
             return View(model);
         }
@@ -42,8 +45,8 @@ namespace RentWheels.Controllers
 		{
             var model = new CarFormViewModel()
             {
-                Engines = await carService.AllEnginesFormAsync(),
-                Categories = await carService.AllCategoriesFormAsync()
+                Engines = await engineService.AllEnginesFormAsync(),
+                Categories = await categoryService.AllCategoriesFormAsync()
             };
 
 			return View(model);
@@ -57,10 +60,15 @@ namespace RentWheels.Controllers
                 ModelState.AddModelError(nameof(model.EngineId), "Selected engine does not exit!");
             }
 
-            if (!ModelState.IsValid)
+			if (await categoryService.CategoryExistsAsync(model.CategoryId) == false)
+			{
+				ModelState.AddModelError(nameof(model.CategoryId), "Selected category does not exist.");
+			}
+
+			if (!ModelState.IsValid)
             {
-                model.Engines = await carService.AllEnginesFormAsync();
-                model.Categories = await carService.AllCategoriesFormAsync();
+                model.Engines = await engineService.AllEnginesFormAsync();
+                model.Categories = await categoryService.AllCategoriesFormAsync();
                 return View(model);
             }
 
@@ -102,9 +110,19 @@ namespace RentWheels.Controllers
 
             if (await engineService.EngineExistsAsync(model.EngineId) == false)
             {
-                ModelState.AddModelError(nameof(model.EngineId), "Selected engine does not exist.");
+                ModelState.AddModelError(nameof(model.EngineId), "Selected engine does not exist.");              
+            }
+            
+            if (await categoryService.CategoryExistsAsync(model.CategoryId) == false)
+            {
+                ModelState.AddModelError(nameof(model.CategoryId), "Selected category does not exist.");              
+            }
 
-                model.Engines = await carService.AllEnginesFormAsync();
+            if (!ModelState.IsValid)
+            {
+                model.Engines = await engineService.AllEnginesFormAsync();
+                model.Categories = await categoryService.AllCategoriesFormAsync();
+
                 return View(model);
             }
 

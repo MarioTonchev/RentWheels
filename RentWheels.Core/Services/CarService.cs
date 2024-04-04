@@ -12,10 +12,16 @@ namespace RentWheels.Core.Services
     public class CarService : ICarService
     {
         private readonly IRepository repository;
+        private readonly IEngineService engineService;
+        private readonly ICategoryService categoryService;
 
-        public CarService(IRepository _repository)
+        public CarService(IRepository _repository,
+            IEngineService _engineService,
+            ICategoryService _categoryService)
         {
             repository = _repository;
+            engineService = _engineService;
+            categoryService = _categoryService;
         }
 
         public async Task<IEnumerable<CarAllViewModel>> AllCarsAsync()
@@ -30,36 +36,7 @@ namespace RentWheels.Core.Services
                 OwnerId = c.OwnerId
             }).ToListAsync();
         }
-
-        public async Task<IEnumerable<EngineAllViewModel>> AllEnginesAsync()
-        {
-            return await repository.AllAsReadOnly<Engine>().Select(e => new EngineAllViewModel()
-            {
-                Name = e.Name,
-                Horsepower = e.Horsepower,
-                Cubage = e.Cubage,
-                FuelType = e.FuelType,
-            }).ToListAsync();
-        }
-
-        public async Task<IEnumerable<EngineFormViewModel>> AllEnginesFormAsync()
-        {
-            return await repository.AllAsReadOnly<Engine>().Select(e => new EngineFormViewModel()
-            {
-                Id = e.Id,
-                Name = e.Name
-            }).ToListAsync();
-        }
-
-        public async Task<IEnumerable<CategoryViewModel>> AllCategoriesFormAsync()
-        {
-            return await repository.AllAsReadOnly<Category>().Select(e => new CategoryViewModel()
-            {
-                Id = e.Id,
-                Name = e.Name
-            }).ToListAsync();
-        }
-
+            
         public async Task<bool> CarExistsAsync(int carId)
         {
             return await repository.AllAsReadOnly<Car>().AnyAsync(c => c.Id == carId);
@@ -144,8 +121,8 @@ namespace RentWheels.Core.Services
 
             if (car != null)
             {
-                car.Engines = await AllEnginesFormAsync();
-                car.Categories = await AllCategoriesFormAsync();
+                car.Engines = await engineService.AllEnginesFormAsync();
+                car.Categories = await categoryService.AllCategoriesFormAsync();
             }
 
             return car;
@@ -222,11 +199,6 @@ namespace RentWheels.Core.Services
 				TotalCarsCount = totalCars,
                 TotalPages = totalPages
 			};
-		}
-
-		public async Task<IEnumerable<string>> AllCategoriesNamesAsync()
-		{
-            return await repository.AllAsReadOnly<Category>().Select(c => c.Name).ToListAsync();
 		}
 	}
 }
