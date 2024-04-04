@@ -10,20 +10,22 @@
             <th>Pick Up Location</th>
             <th>Drop Off Location</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var car in Model)
+        @foreach (var rent in Model)
         {
             <tr>
-                <td>@($"{car.Brand} {car.CarModel}")</td>
-                <td>@car.Start</td>
-                <td>@car.End</td>
-                <td>@car.TotalPrice</td>
-                <td>@car.PickUp</td>
-                <td>@car.DropOff</td>
+                <td>@($"{rent.Brand} {rent.CarModel}")</td>
+                <td>@rent.Start</td>
+                <td>@rent.End</td>
+                <td>@rent.TotalPrice</td>
+                <td>@rent.PickUp</td>
+                <td>@rent.DropOff</td>
+                <td><a asp-action="Edit" asp-controller="Rental" asp-route-id="@rent.RentalId" class="btn btn-success">Edit</a></td>
                 <td>
-                    <form asp-action="End" asp-controller="Rental" asp-route-id="@car.Id" method="post">
+                    <form asp-action="End" asp-controller="Rental" asp-route-id="@rent.RentalId" method="post">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to end your rent?');">End rent</button>
                     </form>
                 </td>

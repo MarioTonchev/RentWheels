@@ -27,11 +27,6 @@ namespace RentWheels.Controllers
                 return BadRequest();
             }
 
-            if (await rentalService.RentalExistsAsync(id, User.Id()))
-            {
-                return RedirectToAction("MyRented");
-            }
-
             if (await rentalService.IsCarValidForRentAsync(id, User.Id()) == false)
             {
                 return RedirectToAction("All", "Car");
@@ -62,8 +57,8 @@ namespace RentWheels.Controllers
 
             if (s > e)
             {
-                return BadRequest();
-            }
+				ModelState.AddModelError(nameof(model.Start), $"Start date cannot be greater than the end date!");
+			}
 
             if (!ModelState.IsValid)
             {
@@ -91,7 +86,12 @@ namespace RentWheels.Controllers
                 return BadRequest();
             }
 
-            await rentalService.EndRentAsync(id, User.Id());
+			if (await rentalService.HasRenterWithIdAsync(id, User.Id()) == false)
+			{
+				return Unauthorized();
+			}
+
+			await rentalService.EndRentAsync(id, User.Id());
 
             return RedirectToAction("MyRented");
         }
@@ -103,5 +103,66 @@ namespace RentWheels.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (await rentalService.RentalExistsAsync(id) == false)
+            {
+                return BadRequest();
+            }
+
+            if (await rentalService.HasRenterWithIdAsync(id, User.Id()) == false)
+            {
+                return Unauthorized();
+            }
+
+            var model = await rentalService.CreateRentalFormViewModelByIdAsync(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, RentCarFormViewModel model)
+        {
+			if (await rentalService.RentalExistsAsync(id) == false)
+			{
+				return BadRequest();
+			}
+
+			if (await rentalService.HasRenterWithIdAsync(id, User.Id()) == false)
+			{
+				return Unauthorized();
+			}
+
+			DateTime s = DateTime.Now;
+			DateTime e = DateTime.Now;
+
+			if (!DateTime.TryParseExact(model.Start, DateFormated, CultureInfo.InvariantCulture, DateTimeStyles.None
+				, out s))
+			{
+				ModelState.AddModelError(nameof(model.Start), $"Invalid date! Format must be: {DateFormated}");
+			}
+
+			if (!DateTime.TryParseExact(model.End, DateFormated, CultureInfo.InvariantCulture, DateTimeStyles.None
+				, out e))
+			{
+				ModelState.AddModelError(nameof(model.End), $"Invalid date! Format must be: {DateFormated}");
+			}
+
+			if (s > e)
+			{
+				ModelState.AddModelError(nameof(model.Start), $"Start date cannot be greater than the end date!");
+			}
+
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+
+			await rentalService.EditAsync(id, model, s, e);
+
+            return RedirectToAction("MyRented");
+		}
     }
 }

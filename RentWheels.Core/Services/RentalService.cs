@@ -39,22 +39,23 @@ namespace RentWheels.Core.Services
 
         public async Task<IEnumerable<MyRentedCarsViewModel>> MyRentedCarsAsync(string renterId)
         {
-            return await repository.AllAsReadOnly<Rental>().Where(r => r.RenterId == renterId).Select(c => new MyRentedCarsViewModel()
+            return await repository.AllAsReadOnly<Rental>().Where(r => r.RenterId == renterId).Select(r => new MyRentedCarsViewModel()
             {
-                Id = c.CarId,
-                Brand = c.Car.Brand,
-                CarModel = c.Car.Model,
-                Start = c.Start.ToString(DateFormated),
-                End = c.End.ToString(DateFormated),
-                TotalPrice = c.TotalPrice,
-                PickUp = c.PickUpLocation,
-                DropOff = c.DropOffLocation
+                RentalId = r.Id,
+                CarId = r.CarId,
+                Brand = r.Car.Brand,
+                CarModel = r.Car.Model,
+                Start = r.Start.ToString(DateFormated),
+                End = r.End.ToString(DateFormated),
+                TotalPrice = r.TotalPrice,
+                PickUp = r.PickUpLocation,
+                DropOff = r.DropOffLocation
             }).ToListAsync();
         }
 
-        public async Task EndRentAsync(int carId, string renterId)
+        public async Task EndRentAsync(int rentalId, string renterId)
         {
-            var rental = await repository.All<Rental>().Where(r => r.CarId == carId && r.RenterId == renterId).Include(c => c.Car)
+            var rental = await repository.All<Rental>().Where(r => r.Id == rentalId && r.RenterId == renterId).Include(c => c.Car)
                 .FirstOrDefaultAsync();
 
             if (rental != null) 
@@ -87,9 +88,9 @@ namespace RentWheels.Core.Services
             return true;
         }
 
-        public async Task<bool> RentalExistsAsync(int carId, string renterId)
+        public async Task<bool> RentalExistsAsync(int rentalId, string renterId)
         {
-            if (await repository.AllAsReadOnly<Rental>().AnyAsync(r => r.CarId == carId && r.RenterId == renterId))
+            if (await repository.AllAsReadOnly<Rental>().AnyAsync(r => r.Id == rentalId && r.RenterId == renterId))
             {
                 return true;
             }
@@ -97,7 +98,17 @@ namespace RentWheels.Core.Services
             return false;
         }
 
-        public async Task<IEnumerable<MyLendedCarsViewModel>> MyLendedCarsAsync(string ownerId)
+		public async Task<bool> RentalExistsAsync(int rentalId)
+		{
+			if (await repository.AllAsReadOnly<Rental>().AnyAsync(r => r.Id == rentalId))
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		public async Task<IEnumerable<MyLendedCarsViewModel>> MyLendedCarsAsync(string ownerId)
         {
             var cars = await repository.AllAsReadOnly<Car>().Where(c => c.OwnerId == ownerId).
                 Select(c => new MyLendedCarsViewModel()
@@ -110,6 +121,47 @@ namespace RentWheels.Core.Services
 
             return cars;
         }
+
+		public async Task<bool> HasRenterWithIdAsync(int rentalId, string renterId)
+		{
+            return await repository.AllAsReadOnly<Rental>().AnyAsync(r => r.Id == rentalId && r.RenterId == renterId);
+		}
+
+		public async Task<RentCarFormViewModel> CreateRentalFormViewModelByIdAsync(int id)
+		{
+            return await repository.AllAsReadOnly<Rental>().Where(r => r.Id == id).Select(r => new RentCarFormViewModel()
+            {
+                Start = r.Start.ToString(DateFormated),
+                End = r.End.ToString(DateFormated),
+                PickUp = r.PickUpLocation,
+                DropOff = r.DropOffLocation
+            }).FirstOrDefaultAsync();
+		}
+
+		public async Task EditAsync(int id, RentCarFormViewModel model, DateTime s, DateTime e)
+		{
+            var rentalToEdit = await repository.All<Rental>().Where(r => r.Id == id).FirstOrDefaultAsync();
+
+            if (rentalToEdit != null)
+            {
+                rentalToEdit.PickUpLocation = model.PickUp;
+                rentalToEdit.DropOffLocation = model.DropOff;
+                rentalToEdit.Start = s;
+                rentalToEdit.End = e;
+
+                rentalToEdit.TotalPrice = CalcualteTotalPrice(s, e, await FindCarPricePerDayAsync(rentalToEdit.CarId));
+
+                await repository.SaveChangesAsync();
+            }
+		}
+
+        private async Task<decimal> FindCarPricePerDayAsync(int carId)
+        {
+            var car = await repository.AllAsReadOnly<Car>().Where(c => c.Id == carId).FirstOrDefaultAsync();
+
+            return car.PricePerDay;
+        }
+
         private decimal CalcualteTotalPrice(DateTime s, DateTime e, decimal pricePerDay)
         {
             decimal result = pricePerDay;
@@ -125,5 +177,5 @@ namespace RentWheels.Core.Services
 
             return result;
         }
-    }
+	}
 }
