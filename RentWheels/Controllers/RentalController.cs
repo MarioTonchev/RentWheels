@@ -12,7 +12,9 @@ namespace RentWheels.Controllers
         private readonly IRentalService rentalService;
         private readonly ICarService carService;
 
-        public RentalController(IRentalService _rentalService, ICarService _carService)
+        public RentalController(
+            IRentalService _rentalService, 
+            ICarService _carService)
         {
             rentalService = _rentalService;
             carService = _carService;
@@ -81,7 +83,7 @@ namespace RentWheels.Controllers
         [HttpPost]
         public async Task<IActionResult> End(int id)
         {
-            if (await rentalService.RentalExistsAsync(id, User.Id()) == false)
+            if (await rentalService.RentalExistsAsync(id) == false)
             {
                 return BadRequest();
             }
@@ -91,7 +93,7 @@ namespace RentWheels.Controllers
 				return Unauthorized();
 			}
 
-			await rentalService.EndRentAsync(id, User.Id());
+			await rentalService.EndRentAsync(id);
 
             return RedirectToAction(nameof(MyRented));
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentWheels.Core.Contracts;
+using RentWheels.Core.ViewModels.Admin;
 using RentWheels.Core.ViewModels.Rental;
 using RentWheels.Infrastructure.Common;
 using RentWheels.Infrastructure.Models;
@@ -53,9 +54,9 @@ namespace RentWheels.Core.Services
             }).ToListAsync();
         }
 
-        public async Task EndRentAsync(int rentalId, string renterId)
+        public async Task EndRentAsync(int rentalId)
         {
-            var rental = await repository.All<Rental>().Where(r => r.Id == rentalId && r.RenterId == renterId).Include(c => c.Car)
+            var rental = await repository.All<Rental>().Where(r => r.Id == rentalId).Include(c => c.Car)
                 .FirstOrDefaultAsync();
 
             if (rental != null) 
@@ -86,16 +87,6 @@ namespace RentWheels.Core.Services
             }
 
             return true;
-        }
-
-        public async Task<bool> RentalExistsAsync(int rentalId, string renterId)
-        {
-            if (await repository.AllAsReadOnly<Rental>().AnyAsync(r => r.Id == rentalId && r.RenterId == renterId))
-            {
-                return true;
-            }
-
-            return false;
         }
 
 		public async Task<bool> RentalExistsAsync(int rentalId)
@@ -163,5 +154,24 @@ namespace RentWheels.Core.Services
 
             return result;
         }
-	}
+
+        public async Task<IEnumerable<AdminAllRentalsViewModel>> AllRentals()
+        {
+            var rentals = await repository.AllAsReadOnly<Rental>().Select(r => new AdminAllRentalsViewModel()
+            {
+                RentalId = r.Id,
+                CarId = r.CarId,
+                Brand = r.Car.Brand,
+                CarModel = r.Car.Model,
+                PickUp = r.PickUpLocation,
+                DropOff = r.DropOffLocation,
+                Start = r.Start.ToString(DateFormated),
+                End = r.End.ToString(DateFormated),
+                TotalPrice = r.TotalPrice,
+                UserEmail = r.Renter.Email
+            }).ToListAsync();
+
+            return rentals;
+        }
+    }
 }
