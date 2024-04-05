@@ -7,5 +7,6 @@
         public string Comment { get; set; } = string.Empty;
         public int CarId { get; set; }
         public string ReviewerId { get; set; } = string.Empty;
+        public string UserEmail { get; set; } = string.Empty;
     }
 }

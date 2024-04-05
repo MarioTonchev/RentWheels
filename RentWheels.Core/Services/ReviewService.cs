@@ -23,7 +23,8 @@ namespace RentWheels.Core.Services
 				Rating = r.Rating,
 				Comment = r.Comment,
 				CarId = r.CarId,
-				ReviewerId = r.ReviewerId
+				ReviewerId = r.ReviewerId,
+				UserEmail = r.Reviewer.Email
 			}).ToListAsync();
 
 			return reviews;
