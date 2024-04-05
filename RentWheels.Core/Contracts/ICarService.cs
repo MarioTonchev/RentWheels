@@ -1,7 +1,5 @@
 ﻿using RentWheels.Core.Enumerations;
 using RentWheels.Core.ViewModels.Car;
-using RentWheels.Core.ViewModels.Category;
-using RentWheels.Core.ViewModels.Engine;
 
 namespace RentWheels.Core.Contracts
 {
@@ -19,6 +17,8 @@ namespace RentWheels.Core.Contracts
         Task<bool> CarExistsAsync(int carId);
 		
 		Task<int> CreateAsync(CarFormViewModel model, string ownerId);
+
+		Task<IEnumerable<MyCarsViewModel>> MyCarsAsync(string ownerId);
 
 		Task<CarDetailsViewModel> DetailsAsync(int carId);
 

@@ -2,14 +2,12 @@
 using RentWheels.Core.Contracts;
 using RentWheels.Core.Enumerations;
 using RentWheels.Core.ViewModels.Car;
-using RentWheels.Core.ViewModels.Category;
-using RentWheels.Core.ViewModels.Engine;
 using RentWheels.Infrastructure.Common;
 using RentWheels.Infrastructure.Models;
 
 namespace RentWheels.Core.Services
 {
-    public class CarService : ICarService
+	public class CarService : ICarService
     {
         private readonly IRepository repository;
         private readonly IEngineService engineService;
@@ -64,7 +62,21 @@ namespace RentWheels.Core.Services
             return car.Id;
         }
 
-        public async Task<CarDetailsViewModel> DetailsAsync(int carId)
+		public async Task<IEnumerable<MyCarsViewModel>> MyCarsAsync(string ownerId)
+		{
+			var cars = await repository.AllAsReadOnly<Car>().Where(c => c.OwnerId == ownerId).
+				Select(c => new MyCarsViewModel()
+				{
+					Id = c.Id,
+					Brand = c.Brand,
+					CarModel = c.Model,
+					Available = c.Available
+				}).ToListAsync();
+
+			return cars;
+		}
+
+		public async Task<CarDetailsViewModel> DetailsAsync(int carId)
         {
             var car = await repository.AllAsReadOnly<Car>().Where(c => c.Id == carId).Include(c => c.Engine).Include(c => c.Category)
                 .FirstOrDefaultAsync();

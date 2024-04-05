@@ -107,21 +107,7 @@ namespace RentWheels.Core.Services
 
 			return false;
 		}
-
-		public async Task<IEnumerable<MyLendedCarsViewModel>> MyLendedCarsAsync(string ownerId)
-        {
-            var cars = await repository.AllAsReadOnly<Car>().Where(c => c.OwnerId == ownerId).
-                Select(c => new MyLendedCarsViewModel()
-                {
-                    Id = c.Id,
-                    Brand = c.Brand,
-                    CarModel = c.Model,
-                    Available = c.Available
-                }).ToListAsync();
-
-            return cars;
-        }
-
+		
 		public async Task<bool> HasRenterWithIdAsync(int rentalId, string renterId)
 		{
             return await repository.AllAsReadOnly<Rental>().AnyAsync(r => r.Id == rentalId && r.RenterId == renterId);

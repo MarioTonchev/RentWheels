@@ -1,6 +1,6 @@
-﻿namespace RentWheels.Core.ViewModels.Rental
+﻿namespace RentWheels.Core.ViewModels.Car
 {
-    public class MyLendedCarsViewModel
+    public class MyCarsViewModel
     {
         public int Id { get; set; }
         public string Brand { get; set; } = string.Empty;

@@ -16,8 +16,6 @@ namespace RentWheels.Core.Contracts
 
         Task<bool> RentalExistsAsync(int rentalId);
 
-		Task<IEnumerable<MyLendedCarsViewModel>> MyLendedCarsAsync(string ownerId);
-
         Task<bool> HasRenterWithIdAsync(int rentalId, string renterId);
 
 		Task EditAsync(int id, RentCarFormViewModel model, DateTime s, DateTime e);
