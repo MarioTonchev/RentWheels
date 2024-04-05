@@ -12,7 +12,8 @@ namespace RentWheels.Controllers
         private readonly IEngineService engineService;
         private readonly ICategoryService categoryService;
 
-        public CarController(ICarService _carService,
+        public CarController(
+            ICarService _carService,
             IEngineService _engineService,
             ICategoryService _categoryService)
         {
