@@ -38,7 +38,7 @@ namespace RentWheels.Controllers
 		{
 			if (await carService.HasOwnerWithIdAsync(id, User.Id()) == true)
 			{
-				return RedirectToAction("AllByCar", new { id = id});
+				return RedirectToAction(nameof(AllByCar), new { id = id});
 			}
 
 			var model = new ReviewFormViewModel()
@@ -54,7 +54,7 @@ namespace RentWheels.Controllers
 		{
 			if (await carService.HasOwnerWithIdAsync(model.CarId, User.Id()) == true)
 			{
-				return RedirectToAction("AllByCar", new { id = model.CarId });
+				return RedirectToAction(nameof(AllByCar), new { id = model.CarId });
 			}
 
 			if (!ModelState.IsValid)
@@ -64,7 +64,7 @@ namespace RentWheels.Controllers
 
 			await reviewService.AddAsync(model, User.Id());
 
-			return RedirectToAction("AllByCar", new { id = model.CarId});
+			return RedirectToAction(nameof(AllByCar), new { id = model.CarId});
 		}
 
 		[HttpPost]
@@ -75,7 +75,7 @@ namespace RentWheels.Controllers
 				return BadRequest();
 			}
 
-			if (await reviewService.HasReviewerWithIdAsync(id, User.Id()) == false)
+			if (await reviewService.HasReviewerWithIdAsync(id, User.Id()) == false && User.IsAdimn() == false)
 			{
 				return Unauthorized();
 			}
@@ -84,7 +84,7 @@ namespace RentWheels.Controllers
 
 			await reviewService.RemoveReviewAsync(id);
 
-			return RedirectToAction("AllByCar", new { id = carId });
+			return RedirectToAction(nameof(AllByCar), new { id = carId });
 		}
 
 		[HttpGet]
@@ -95,7 +95,7 @@ namespace RentWheels.Controllers
 				return BadRequest();
 			}
 
-			if (await reviewService.HasReviewerWithIdAsync(id, User.Id()) == false)
+			if (await reviewService.HasReviewerWithIdAsync(id, User.Id()) == false && User.IsAdimn() == false)
 			{
 				return Unauthorized();
 			}
@@ -113,14 +113,14 @@ namespace RentWheels.Controllers
 				return BadRequest();
 			}
 
-			if (await reviewService.HasReviewerWithIdAsync(id, User.Id()) == false)
+			if (await reviewService.HasReviewerWithIdAsync(id, User.Id()) == false && User.IsAdimn() == false)
 			{
 				return Unauthorized();
 			}
 
 			await reviewService.EditAsync(id, model);
 
-			return RedirectToAction("AllByCar", new { id = model.CarId });
+			return RedirectToAction(nameof(AllByCar), new { id = model.CarId });
 		}
 	}
 }

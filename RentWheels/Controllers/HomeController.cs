@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RentWheels.Models;
-using System.Diagnostics;
 
 namespace RentWheels.Controllers
 {

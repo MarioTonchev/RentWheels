@@ -74,7 +74,7 @@ namespace RentWheels.Controllers
 
             await carService.CreateAsync(model, User.Id());
 
-            return RedirectToAction("All");
+            return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
@@ -85,7 +85,7 @@ namespace RentWheels.Controllers
                 return BadRequest();
             }
 
-            if (await carService.HasOwnerWithIdAsync(id, User.Id()) == false)
+            if (await carService.HasOwnerWithIdAsync(id, User.Id()) == false && User.IsAdimn() == false)
             {
                 return Unauthorized();
             }
@@ -103,7 +103,7 @@ namespace RentWheels.Controllers
                 return BadRequest();
             }
 
-            if (await carService.HasOwnerWithIdAsync(id, User.Id()) == false)
+            if (await carService.HasOwnerWithIdAsync(id, User.Id()) == false && User.IsAdimn() == false)
             {
                 return Unauthorized();
             }
@@ -128,7 +128,7 @@ namespace RentWheels.Controllers
 
             await carService.EditAsync(id, model);
 
-            return RedirectToAction("MyLended", "Rental");
+            return RedirectToAction(nameof(MyCars));
         }
 
         [HttpGet]
@@ -152,14 +152,22 @@ namespace RentWheels.Controllers
                 return BadRequest();
             }
 
-            if (await carService.HasOwnerWithIdAsync(id, User.Id()) == false)
+            if (await carService.HasOwnerWithIdAsync(id, User.Id()) == false && User.IsAdimn() == false)
             {
                 return Unauthorized();
             }
 
             await carService.RemoveCarAsync(id);
 
-            return RedirectToAction("MyLended", "Rental");
+            return RedirectToAction(nameof(MyCars));
         }
-    }
+
+		[HttpGet]
+		public async Task<IActionResult> MyCars()
+		{
+			var model = await carService.MyCarsAsync(User.Id());
+
+			return View(model);
+		}
+	}
 }
