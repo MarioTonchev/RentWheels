@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentWheels.Core.Contracts;
 using RentWheels.Core.Enumerations;
+using RentWheels.Core.ViewModels.Admin;
 using RentWheels.Core.ViewModels.Car;
 using RentWheels.Infrastructure.Common;
 using RentWheels.Infrastructure.Models;
@@ -22,19 +23,62 @@ namespace RentWheels.Core.Services
             categoryService = _categoryService;
         }
 
-        public async Task<IEnumerable<CarAllViewModel>> AllCarsAsync()
-        {
-            return await repository.AllAsReadOnly<Car>().Select(c => new CarAllViewModel()
+		public async Task<CarQueryViewModel> AllAsync(string? cateogry = null, string? searchTerm = null, CarSorting sorting = CarSorting.Newest, int currentPage = 1, int carPerPage = 4)
+		{
+            var cars = repository.AllAsReadOnly<Car>();
+
+            if (cateogry != null)
             {
-                Id = c.Id,
-                Brand = c.Brand,
-                CarModel = c.Model,
-                Year = c.Year,
-                ImageUrl = c.ImageUrl,
-                OwnerId = c.OwnerId
-            }).ToListAsync();
-        }
-            
+                cars = cars.Where(c => c.Category.Name == cateogry);
+            }
+
+            if (searchTerm != null)
+            {
+                string normalizedSearchTerm = searchTerm.ToLower();
+                cars = cars.Where(c => c.Brand.ToLower().Contains(normalizedSearchTerm) || c.Model.ToLower().Contains(normalizedSearchTerm));
+            }
+
+            switch (sorting)
+            {
+                case CarSorting.Year:
+                    cars = cars.OrderByDescending(c => c.Year);
+                    break;
+                case CarSorting.PriceAscending:
+                    cars = cars.OrderBy(c => c.PricePerDay);
+                    break;
+                case CarSorting.PriceDescending:
+                    cars = cars.OrderByDescending(c => c.PricePerDay);
+                    break;
+                default:
+                    cars = cars.OrderByDescending(c => c.Id);
+                    break;
+            }
+
+			var carsPaginated = await cars
+				.Skip((currentPage - 1) * carPerPage)
+				.Take(carPerPage)
+				.Select(c => new CarAllViewModel()
+                {
+                    Id = c.Id,
+                    Brand = c.Brand,
+                    CarModel = c.Model,
+                    ImageUrl = c.ImageUrl,
+                    Year = c.Year,
+                    OwnerId = c.OwnerId
+                })
+				.ToListAsync();
+
+			int totalCars = await cars.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalCars / (double)carPerPage);
+
+			return new CarQueryViewModel()
+			{
+				Cars = carsPaginated,
+				TotalCarsCount = totalCars,
+                TotalPages = totalPages
+			};
+		}
+           
         public async Task<bool> CarExistsAsync(int carId)
         {
             return await repository.AllAsReadOnly<Car>().AnyAsync(c => c.Id == carId);
@@ -157,60 +201,18 @@ namespace RentWheels.Core.Services
             }
         }
 
-		public async Task<CarQueryViewModel> AllAsync(string? cateogry = null, string? searchTerm = null, CarSorting sorting = CarSorting.Newest, int currentPage = 1, int carPerPage = 4)
-		{
-            var cars = repository.AllAsReadOnly<Car>();
-
-            if (cateogry != null)
+        public async Task<IEnumerable<AdminAllCarsViewModel>> AllCarsAsync()
+        {
+            return await repository.AllAsReadOnly<Car>().Select(c => new AdminAllCarsViewModel()
             {
-                cars = cars.Where(c => c.Category.Name == cateogry);
-            }
-
-            if (searchTerm != null)
-            {
-                string normalizedSearchTerm = searchTerm.ToLower();
-                cars = cars.Where(c => c.Brand.ToLower().Contains(normalizedSearchTerm) || c.Model.ToLower().Contains(normalizedSearchTerm));
-            }
-
-            switch (sorting)
-            {
-                case CarSorting.Year:
-                    cars = cars.OrderByDescending(c => c.Year);
-                    break;
-                case CarSorting.PriceAscending:
-                    cars = cars.OrderBy(c => c.PricePerDay);
-                    break;
-                case CarSorting.PriceDescending:
-                    cars = cars.OrderByDescending(c => c.PricePerDay);
-                    break;
-                default:
-                    cars = cars.OrderByDescending(c => c.Id);
-                    break;
-            }
-
-			var carsPaginated = await cars
-				.Skip((currentPage - 1) * carPerPage)
-				.Take(carPerPage)
-				.Select(c => new CarAllViewModel()
-                {
-                    Id = c.Id,
-                    Brand = c.Brand,
-                    CarModel = c.Model,
-                    ImageUrl = c.ImageUrl,
-                    Year = c.Year,
-                    OwnerId = c.OwnerId
-                })
-				.ToListAsync();
-
-			int totalCars = await cars.CountAsync();
-            int totalPages = (int)Math.Ceiling(totalCars / (double)carPerPage);
-
-			return new CarQueryViewModel()
-			{
-				Cars = carsPaginated,
-				TotalCarsCount = totalCars,
-                TotalPages = totalPages
-			};
-		}
+                Id = c.Id,
+                Brand = c.Brand,
+                CarModel = c.Model,
+                Year = c.Year,
+                ImageUrl = c.ImageUrl,
+                OwnerId = c.OwnerId,
+                UserEmail = c.Owner.Email
+            }).ToListAsync();
+        }
 	}
 }

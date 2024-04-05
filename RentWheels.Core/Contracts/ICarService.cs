@@ -1,4 +1,5 @@
 ﻿using RentWheels.Core.Enumerations;
+using RentWheels.Core.ViewModels.Admin;
 using RentWheels.Core.ViewModels.Car;
 
 namespace RentWheels.Core.Contracts
@@ -12,7 +13,7 @@ namespace RentWheels.Core.Contracts
 			int currentPage = 1,
 			int carPerPage = 4);
 
-		Task<IEnumerable<CarAllViewModel>> AllCarsAsync();
+		Task<IEnumerable<AdminAllCarsViewModel>> AllCarsAsync();
 
         Task<bool> CarExistsAsync(int carId);
 		
