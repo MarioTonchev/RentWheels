@@ -1,0 +1,63 @@
+﻿@model CarFormViewModel
+
+<form method="post">
+	<div class="mb-3">
+		<label asp-for="@Model.Brand" class="form-label">Brand</label>
+		<input asp-for="@Model.Brand" class="form-control" required />
+		<span asp-validation-for="@Model.Brand" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="@Model.CarModel" class="form-label">Model</label>
+		<input asp-for="@Model.CarModel" class="form-control" required />
+		<span asp-validation-for="@Model.CarModel" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="@Model.Color" class="form-label">Color</label>
+		<input asp-for="@Model.Color" class="form-control" required />
+		<span asp-validation-for="@Model.Color" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="@Model.Year" class="form-label">Year</label>
+		<input asp-for="@Model.Year" class="form-control" required placeholder="Enter year" />
+		<span asp-validation-for="@Model.Year" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="@Model.ImageUrl" class="form-label">Image URL</label>
+		<input asp-for="@Model.ImageUrl" class="form-control" required />
+		<span asp-validation-for="@Model.ImageUrl" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="@Model.PricePerDay" class="form-label">Price Per Day</label>
+		<input asp-for="@Model.PricePerDay" class="form-control" required placeholder="Enter price" />
+		<span asp-validation-for="@Model.PricePerDay" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="@Model.EngineId" class="form-label">Engine</label>
+		<select asp-for="@Model.EngineId" class="form-control" required">
+			@foreach (var engine in Model.Engines)
+			{
+				<option value="@engine.Id">@engine.Name</option>
+			}
+		</select>
+		<span asp-validation-for="@Model.EngineId" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="@Model.CategoryId" class="form-label">Category</label>
+		<select asp-for="@Model.CategoryId" class="form-control" required">
+			@foreach (var category in Model.Categories)
+			{
+				<option value="@category.Id">@category.Name</option>
+			}
+		</select>
+		<span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
+	</div>
+
+	<button type="submit" class="btn btn-success">Finish</button>
+</form>

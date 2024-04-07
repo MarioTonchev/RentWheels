@@ -2,33 +2,7 @@
 
 <h2>Rent a car</h2>
 
-<form asp-action="Rent" method="post">
-	<div class="mb-3">
-		<label asp-for="@Model.PickUp" class="form-label">Pick Up Location</label>
-		<input asp-for="@Model.PickUp" class="form-control" required />
-		<span asp-validation-for="@Model.PickUp" class="text-danger"></span>
-	</div>
-
-	<div class="mb-3">
-		<label asp-for="@Model.DropOff" class="form-label">Drop Off Location</label>
-		<input asp-for="@Model.DropOff" class="form-control" required />
-		<span asp-validation-for="@Model.DropOff" class="text-danger"></span>
-	</div>
-
-	<div class="mb-3">
-		<label asp-for="@Model.Start" class="form-label">Start Date</label>
-		<input asp-for="@Model.Start" class="form-control" required />
-		<span asp-validation-for="@Model.Start" class="text-danger"></span>
-	</div>
-
-	<div class="mb-3">
-		<label asp-for="@Model.End" class="form-label">End Date</label>
-		<input asp-for="@Model.End" class="form-control" required />
-		<span asp-validation-for="@Model.End" class="text-danger"></span>
-	</div>
-
-	<button type="submit" class="btn btn-success">Rent</button>
-</form>
+<partial name="_RentalFormPartial" model="@Model"/>
 
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />
