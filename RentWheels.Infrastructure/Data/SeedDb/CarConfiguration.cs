@@ -8,7 +8,9 @@ namespace RentWheels.Infrastructure.Data.SeedDb
 	{
 		public void Configure(EntityTypeBuilder<Car> builder)
 		{
-			var data = new SeedData();
+            builder.Property(c => c.Available).HasDefaultValue("true");
+
+            var data = new SeedData();
 
 			builder.HasData(new Car[] { data.FirstCar, data.SecondCar });
 		}
