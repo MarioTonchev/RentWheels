@@ -1,0 +1,38 @@
+﻿@model IEnumerable<RentHistoryViewModel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Car</th>
+            <th>Rented on:</th>
+            <th>Rent ends on:</th>
+            <th>Total price</th>
+            <th>Pick Up Location</th>
+            <th>Drop Off Location</th>
+            <th>Active:</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rent in Model)
+        {
+            <tr>
+                <td>@($"{rent.Brand} {rent.CarModel}")</td>
+                <td>@rent.Start</td>
+                <td>@rent.End</td>
+                <td>@rent.TotalPrice</td>
+                <td>@rent.PickUp</td>
+                <td>@rent.DropOff</td>
+                <td>
+                    @if (rent.IsActive == "true")
+                    {
+                        <i class="fas fa-check text-success offset-2"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-times text-danger offset-2"></i>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

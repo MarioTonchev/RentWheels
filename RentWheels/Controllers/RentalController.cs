@@ -158,5 +158,13 @@ namespace RentWheels.Controllers
 
             return RedirectToAction(nameof(MyRented));
 		}
+
+        [HttpGet]
+        public async Task<IActionResult> MyRentHistory()
+        {
+            var cars = await rentalService.MyRentHistoryAsync(User.Id());
+
+            return View(cars); 
+        }
     }
 }

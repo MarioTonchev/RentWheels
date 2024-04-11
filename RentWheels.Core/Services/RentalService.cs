@@ -29,7 +29,8 @@ namespace RentWheels.Core.Services
                 End = e,
                 PickUpLocation = model.PickUp,
                 DropOffLocation = model.DropOff,
-                TotalPrice = CalcualteTotalPrice(s, e, car.PricePerDay)
+                TotalPrice = CalcualteTotalPrice(s, e, car.PricePerDay),
+                IsActive = "true"
             };
 
             car.Available = "false";
@@ -40,7 +41,8 @@ namespace RentWheels.Core.Services
 
         public async Task<IEnumerable<MyRentedCarsViewModel>> MyRentedCarsAsync(string renterId)
         {
-            return await repository.AllAsReadOnly<Rental>().Where(r => r.RenterId == renterId).Select(r => new MyRentedCarsViewModel()
+            return await repository.AllAsReadOnly<Rental>().Where(r => r.RenterId == renterId && r.IsActive == "true")
+                .Select(r => new MyRentedCarsViewModel()
             {
                 RentalId = r.Id,
                 CarId = r.CarId,
@@ -62,7 +64,7 @@ namespace RentWheels.Core.Services
             if (rental != null) 
             {
                 rental.Car.Available = "true";
-                repository.Delete(rental);
+                rental.IsActive = "false";
                 await repository.SaveChangesAsync();
             }
         }
@@ -91,7 +93,7 @@ namespace RentWheels.Core.Services
 
 		public async Task<bool> RentalExistsAsync(int rentalId)
 		{
-			if (await repository.AllAsReadOnly<Rental>().AnyAsync(r => r.Id == rentalId))
+			if (await repository.AllAsReadOnly<Rental>().AnyAsync(r => r.Id == rentalId && r.IsActive == "true"))
 			{
 				return true;
 			}
@@ -101,7 +103,7 @@ namespace RentWheels.Core.Services
 		
 		public async Task<bool> HasRenterWithIdAsync(int rentalId, string renterId)
 		{
-            return await repository.AllAsReadOnly<Rental>().AnyAsync(r => r.Id == rentalId && r.RenterId == renterId);
+            return await repository.AllAsReadOnly<Rental>().AnyAsync(r => r.Id == rentalId && r.RenterId == renterId && r.IsActive == "true");
 		}
 
 		public async Task<RentCarFormViewModel> CreateRentalFormViewModelByIdAsync(int id)
@@ -155,9 +157,10 @@ namespace RentWheels.Core.Services
             return result;
         }
 
-        public async Task<IEnumerable<AdminAllRentalsViewModel>> AllRentals()
+        public async Task<IEnumerable<AdminAllRentalsViewModel>> AllActiveRentals()
         {
-            var rentals = await repository.AllAsReadOnly<Rental>().Select(r => new AdminAllRentalsViewModel()
+            var rentals = await repository.AllAsReadOnly<Rental>().Where(r => r.IsActive == "true")
+                .Select(r => new AdminAllRentalsViewModel()
             {
                 RentalId = r.Id,
                 CarId = r.CarId,
@@ -172,6 +175,24 @@ namespace RentWheels.Core.Services
             }).ToListAsync();
 
             return rentals;
+        }
+
+        public async Task<IEnumerable<RentHistoryViewModel>> MyRentHistoryAsync(string renterId)
+        {
+            return await repository.AllAsReadOnly<Rental>().Where(r => r.RenterId == renterId)
+                .Select(r => new RentHistoryViewModel()
+                {
+                    RentalId = r.Id,
+                    CarId = r.CarId,
+                    Brand = r.Car.Brand,
+                    CarModel = r.Car.Model,
+                    Start = r.Start.ToString(DateFormated),
+                    End = r.End.ToString(DateFormated),
+                    TotalPrice = r.TotalPrice,
+                    PickUp = r.PickUpLocation,
+                    DropOff = r.DropOffLocation,
+                    IsActive = r.IsActive
+                }).ToListAsync();
         }
     }
 }
