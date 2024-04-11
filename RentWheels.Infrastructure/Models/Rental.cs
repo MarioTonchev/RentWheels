@@ -42,5 +42,8 @@ namespace RentWheels.Infrastructure.Models
         [StringLength(RentalMaxDropOffLocationLength)]
         [Comment("Where the car will be dropped off")]
         public string DropOffLocation { get; set; } = string.Empty;
+        [Required]
+        [Comment("Is the rent still active or not")]
+        public string IsActive { get; set; } = string.Empty;
     }
 }
