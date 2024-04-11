@@ -83,7 +83,7 @@ namespace RentWheels.Core.Services
                 return false;
             }
 
-            if (car.Rentals.Any(r => r.CarId == carId))
+            if (car.Rentals.Any(r => r.CarId == carId && r.IsActive == "true"))
             {
                 return false;
             }
