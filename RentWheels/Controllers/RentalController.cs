@@ -7,86 +7,86 @@ using static RentWheels.Infrastructure.Constants.DataConstants;
 
 namespace RentWheels.Controllers
 {
-    public class RentalController : BaseController
-    {
-        private readonly IRentalService rentalService;
-        private readonly ICarService carService;
+	public class RentalController : BaseController
+	{
+		private readonly IRentalService rentalService;
+		private readonly ICarService carService;
 
-        public RentalController(
-            IRentalService _rentalService, 
-            ICarService _carService)
-        {
-            rentalService = _rentalService;
-            carService = _carService;
+		public RentalController(
+			IRentalService _rentalService,
+			ICarService _carService)
+		{
+			rentalService = _rentalService;
+			carService = _carService;
 
-        }
+		}
 
-        [HttpGet]
-        public async Task<IActionResult> Rent(int id)
-        {
-            if (await carService.CarExistsAsync(id) == false)
-            {
-                return BadRequest();
-            }
+		[HttpGet]
+		public async Task<IActionResult> Rent(int id)
+		{
+			if (await carService.CarExistsAsync(id) == false)
+			{
+				return BadRequest();
+			}
 
-            if (await rentalService.IsCarValidForRentAsync(id, User.Id()) == false)
-            {
-                return RedirectToAction("All", "Car");
-            }
+			if (await rentalService.IsCarValidForRentAsync(id, User.Id()) == false)
+			{
+				return RedirectToAction("All", "Car");
+			}
 
-            var model = new RentCarFormViewModel();
+			var model = new RentCarFormViewModel();			
 
-            return View(model);
-        }
+			return View(model);
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> Rent(int id, RentCarFormViewModel model)
-        {
-            DateTime s = DateTime.Now;
-            DateTime e = DateTime.Now;
+		[HttpPost]
+		public async Task<IActionResult> Rent(int id, RentCarFormViewModel model)
+		{
+			DateTime s = DateTime.Now;
+			DateTime e = DateTime.Now;
 
-            if (!DateTime.TryParseExact(model.Start, DateFormated, CultureInfo.InvariantCulture, DateTimeStyles.None
-                , out s))
-            {
-                ModelState.AddModelError(nameof(model.Start), $"Invalid date! Format must be: {DateFormated}");
-            }
+			if (!DateTime.TryParseExact(model.Start, DateFormated, CultureInfo.InvariantCulture, DateTimeStyles.None
+				, out s))
+			{
+				ModelState.AddModelError(nameof(model.Start), $"Invalid date! Format must be: {DateFormated}");
+			}
 
-            if (!DateTime.TryParseExact(model.End, DateFormated, CultureInfo.InvariantCulture, DateTimeStyles.None
-                , out e))
-            {
-                ModelState.AddModelError(nameof(model.End), $"Invalid date! Format must be: {DateFormated}");
-            }
+			if (!DateTime.TryParseExact(model.End, DateFormated, CultureInfo.InvariantCulture, DateTimeStyles.None
+				, out e))
+			{
+				ModelState.AddModelError(nameof(model.End), $"Invalid date! Format must be: {DateFormated}");
+			}
 
-            if (s > e)
-            {
+			if (s > e)
+			{
 				ModelState.AddModelError(nameof(model.Start), $"Start date cannot be greater than the end date!");
 			}
 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-          
-            await rentalService.RentCarAsync(model, id, User.Id(), s, e);
-            
-            return RedirectToAction(nameof(MyRented));
-        }
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
 
-        [HttpGet]
-        public async Task<IActionResult> MyRented()
-        {
-            var cars = await rentalService.MyRentedCarsAsync(User.Id());
+			await rentalService.RentCarAsync(model, id, User.Id(), s, e);
 
-            return View(cars);
-        }
+			return RedirectToAction(nameof(MyRented));
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> End(int id)
-        {
-            if (await rentalService.RentalExistsAsync(id) == false)
-            {
-                return BadRequest();
-            }
+		[HttpGet]
+		public async Task<IActionResult> MyRented()
+		{
+			var cars = await rentalService.MyRentedCarsAsync(User.Id());
+
+			return View(cars);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> End(int id)
+		{
+			if (await rentalService.RentalExistsAsync(id) == false)
+			{
+				return BadRequest();
+			}
 
 			if (await rentalService.HasRenterWithIdAsync(id, User.Id()) == false && User.IsAdimn() == false)
 			{
@@ -95,30 +95,30 @@ namespace RentWheels.Controllers
 
 			await rentalService.EndRentAsync(id);
 
-            return RedirectToAction(nameof(MyRented));
-        }
+			return RedirectToAction(nameof(MyRented));
+		}
 
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            if (await rentalService.RentalExistsAsync(id) == false)
-            {
-                return BadRequest();
-            }
+		[HttpGet]
+		public async Task<IActionResult> Edit(int id)
+		{
+			if (await rentalService.RentalExistsAsync(id) == false)
+			{
+				return BadRequest();
+			}
 
-            if (await rentalService.HasRenterWithIdAsync(id, User.Id()) == false && User.IsAdimn() == false)
-            {
-                return Unauthorized();
-            }
+			if (await rentalService.HasRenterWithIdAsync(id, User.Id()) == false && User.IsAdimn() == false)
+			{
+				return Unauthorized();
+			}
 
-            var model = await rentalService.CreateRentalFormViewModelByIdAsync(id);
+			var model = await rentalService.CreateRentalFormViewModelByIdAsync(id);
 
-            return View(model);
-        }
+			return View(model);
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id, RentCarFormViewModel model)
-        {
+		[HttpPost]
+		public async Task<IActionResult> Edit(int id, RentCarFormViewModel model)
+		{
 			if (await rentalService.RentalExistsAsync(id) == false)
 			{
 				return BadRequest();
@@ -156,15 +156,15 @@ namespace RentWheels.Controllers
 
 			await rentalService.EditAsync(id, model, s, e);
 
-            return RedirectToAction(nameof(MyRented));
+			return RedirectToAction(nameof(MyRented));
 		}
 
-        [HttpGet]
-        public async Task<IActionResult> MyRentHistory()
-        {
-            var cars = await rentalService.MyRentHistoryAsync(User.Id());
+		[HttpGet]
+		public async Task<IActionResult> MyRentHistory()
+		{
+			var cars = await rentalService.MyRentHistoryAsync(User.Id());
 
-            return View(cars); 
-        }
-    }
+			return View(cars);
+		}
+	}
 }
