@@ -180,6 +180,7 @@ namespace RentWheels.Core.Services
         public async Task<IEnumerable<RentHistoryViewModel>> MyRentHistoryAsync(string renterId)
         {
             return await repository.AllAsReadOnly<Rental>().Where(r => r.RenterId == renterId)
+                .OrderByDescending(r => r.IsActive).ThenBy(r => r.Id)
                 .Select(r => new RentHistoryViewModel()
                 {
                     RentalId = r.Id,
