@@ -7,6 +7,7 @@ namespace RentWheels.Core.ViewModels.Car
 	{
 		public int CarsPerPage { get; set; } = 4;
         public string Category { get; set; } = null!;
+        public string Color { get; set; } = null!;
         [Display(Name = "Search")]
         public string SearchTerm { get; set; } = null!;
         [Display(Name = "Sort by")]

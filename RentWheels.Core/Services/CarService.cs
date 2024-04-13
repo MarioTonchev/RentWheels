@@ -23,13 +23,18 @@ namespace RentWheels.Core.Services
             categoryService = _categoryService;
         }
 
-		public async Task<CarQueryViewModel> AllAsync(string? cateogry = null, string? searchTerm = null, CarSorting sorting = CarSorting.Newest, int currentPage = 1, int carPerPage = 4)
+		public async Task<CarQueryViewModel> AllAsync(string? cateogry = null, string? color = null, string? searchTerm = null, CarSorting sorting = CarSorting.Newest, int currentPage = 1, int carPerPage = 4)
 		{
             var cars = repository.AllAsReadOnly<Car>();
 
             if (cateogry != null)
             {
                 cars = cars.Where(c => c.Category.Name == cateogry);
+            }
+
+            if (color != null)
+            {
+                cars = cars.Where(c => c.Color.Contains(color.ToLower()));
             }
 
             if (searchTerm != null)

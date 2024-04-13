@@ -7,7 +7,8 @@ namespace RentWheels.Core.Contracts
 	public interface ICarService
 	{		
 		Task<CarQueryViewModel> AllAsync(
-			string? cateogry = null, 
+			string? cateogry = null,
+			string? color = null,
 			string? searchTerm = null, 
 			CarSorting sorting = CarSorting.Newest,
 			int currentPage = 1,

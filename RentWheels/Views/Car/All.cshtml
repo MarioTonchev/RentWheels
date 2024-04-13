@@ -21,7 +21,7 @@
 <body>
 	<form method="get">
 		<div class="row">
-			<div class="form-group col-md-3 d-flex justify-content-between">
+			<div class="form-group col-md-1 d-flex justify-content-between">
 				<div class="form-group">
 					<label asp-for="Category"></label>
 					<select asp-for="Category" class="form-control">
@@ -34,6 +34,11 @@
 				</div>
 			</div>
 
+			<div class="form-group col-md-2">
+				<label asp-for="Color"></label>
+				<input asp-for="Color" class="form-control">
+			</div>
+
 			<div class="form-group col-md-3">
 				<label asp-for="SearchTerm"></label>
 				<input asp-for="SearchTerm" class="form-control">
@@ -44,7 +49,7 @@
 					<label asp-for="Sorting"></label>
 					<select asp-for="Sorting" class="form-control">
 						<option value="0">Newest offers</option>
-						<option value="1">Year</option>
+						<option value="1">Year Descending</option>
 						<option value="2">Price Ascending</option>
 						<option value="3">Price Descending</option>
 					</select>
@@ -52,7 +57,7 @@
 			</div>
 
 			<div class="col-md-3">
-				<div class="form-group mt-4 p-2">
+				<div class="form-group mt-3 p-2">
 					<input type="submit" value="Search" class="btn btn-primary" />
 				</div>
 			</div>
@@ -91,7 +96,7 @@
 				@for (int i = 1; i <= Model.TotalPages; i++)
 				{
 					<li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-						<a class="page-link" href="?currentpage=@i&category=@Model.Category&searchTerm=@Model.SearchTerm&sorting=@Model.Sorting">@i</a>
+						<a class="page-link" href="?currentpage=@i&category=@Model.Category&color=@Model.Color&searchTerm=@Model.SearchTerm&sorting=@Model.Sorting">@i</a>
 					</li>
 				}
 			</ul>

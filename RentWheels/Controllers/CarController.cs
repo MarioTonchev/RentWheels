@@ -28,6 +28,7 @@ namespace RentWheels.Controllers
         {
             var cars = await carService.AllAsync(
                 model.Category,
+                model.Color,
                 model.SearchTerm,
                 model.Sorting,
                 model.CurrentPage,
