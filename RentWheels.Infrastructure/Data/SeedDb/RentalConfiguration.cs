@@ -8,7 +8,7 @@ namespace RentWheels.Infrastructure.Data.SeedDb
     {
         public void Configure(EntityTypeBuilder<Rental> builder)
         {
-            builder.Property(r => r.IsActive).HasDefaultValueSql("true");
+            
         }
     }
 }
