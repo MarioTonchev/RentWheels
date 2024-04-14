@@ -27,5 +27,6 @@ namespace RentWheels.Infrastructure.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Rental> Rentals { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }
