@@ -24,5 +24,7 @@ namespace RentWheels.Core.Contracts
         Task<IEnumerable<AdminAllRentalsViewModel>> AllActiveRentals();
 
         Task<IEnumerable<RentHistoryViewModel>> MyRentHistoryAsync(string renterId);
-    }
+
+		Task<IEnumerable<RentalMessageViewModel>> MyRentedCarsForSendingMessageAsync(string renterId);
+	}
 }

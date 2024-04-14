@@ -15,6 +15,7 @@
 		<li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Hello @User.Identity?.Name!</a>
 			<ul class="dropdown-menu">
+				<li><a class="dropdown-item" asp-area="" asp-action="MyMessages" asp-controller="Message">Inbox</a></li>
 				<li><a class="dropdown-item" asp-area="" asp-action="MyCars" asp-controller="Car">Manage My Cars</a></li>
 				<li><a class="dropdown-item" asp-area="" asp-action="MyRentHistory" asp-controller="Rental">View Rental History</a></li>
 				<li><hr class="dropdown-divider"></li>

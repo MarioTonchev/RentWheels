@@ -1,0 +1,37 @@
+﻿@model MessageFormViewModel
+
+<h2 class="text-center" style="margin-top: 150px">Report your rental problems</h2>
+
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<form asp-action="SendMessage" asp-controller="Message" method="post">
+				<div class="form-group mt-3">
+					<label asp-for="Title" class="control-label">Title</label>
+					<input asp-for="Title" class="form-control" placeholder="Enter title">
+					<span asp-validation-for="Title" class="text-danger"></span>
+				</div>
+				<div class="form-group mt-3">
+					<label asp-for="Content" class="control-label">Write your message:</label>
+					<input asp-for="Content" class="form-control" placeholder="...">
+					<span asp-validation-for="Content" class="text-danger"></span>
+				</div>
+				<div class="form-group mt-3">
+					<label asp-for="RentalId" class="control-label">Which rental does the message correspond to?</label>
+					<select asp-for="RentalId" class="form-control" required">
+						@foreach (var rental in Model.Rentals)
+						{
+							<option value="@rental.Id">@($"{rental.CarBrand} {rental.CarModel}")</option>
+						}
+					</select>
+					<span asp-validation-for="RentalId" class="text-danger"></span>
+				</div>
+				<button type="submit" class="btn btn-primary mt-3">Send</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
