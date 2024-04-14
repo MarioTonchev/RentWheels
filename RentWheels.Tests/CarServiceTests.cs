@@ -164,7 +164,17 @@ namespace RentWheels.Tests
             Assert.That(result.Cars.Any(c => c.Brand == "Honda"), Is.False);
         }
 
-        [Test]
+		[Test]
+		public async Task AllAsyncWithColorFilter()
+		{
+			var result = await carService.AllAsync(color: "Black");
+
+			Assert.IsNotNull(result);
+			Assert.That(result.TotalCarsCount, Is.EqualTo(1));
+			Assert.That(result.Cars.Any(c => c.Brand == "Audi"), Is.True);
+		}
+
+		[Test]
         public async Task AllAsyncWithSearchFilter()
         {
             var result = await carService.AllAsync(searchTerm: "A4");
