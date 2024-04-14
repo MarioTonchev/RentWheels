@@ -25,13 +25,13 @@
 
 	<div class="mb-3">
 		<label asp-for="@Model.Start" class="form-label">Start Date</label>
-		<input asp-for="@Model.Start" class="form-control" required" />
+		<input asp-for="@Model.Start" class="form-control" required" placeholder="dd/mm/yyyy" />
 		<span asp-validation-for="@Model.Start" class="text-danger"></span>
 	</div>
 
 	<div class="mb-3">
 		<label asp-for="@Model.End" class="form-label">End Date</label>
-		<input asp-for="@Model.End" class="form-control" required" />
+		<input asp-for="@Model.End" class="form-control" required" placeholder="dd/mm/yyyy" />
 		<span asp-validation-for="@Model.End" class="text-danger"></span>
 	</div>
 
