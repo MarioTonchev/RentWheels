@@ -59,6 +59,15 @@ namespace RentWheels.Infrastructure.Constants
 			public const int RentalMaxDropOffLocationLength = 30;
 		}
 
+		public static class MessageEntityConstants
+		{
+			public const int MessageMinTitleLength = 5;
+			public const int MessageMaxTitleLength = 40;
+
+			public const int MessageMinContentLength = 10;
+			public const int MessageMaxContentLength = 1500;
+		}
+
 		public const string DateFormated = "dd/MM/yyyy";
 	}
 }
