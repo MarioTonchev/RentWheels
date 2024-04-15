@@ -21,7 +21,7 @@ namespace RentWheels.Core.Contracts
 
 		Task<RentCarFormViewModel> CreateRentalFormViewModelByIdAsync(int id);
 
-        Task<IEnumerable<AdminAllRentalsViewModel>> AllActiveRentals();
+        Task<IEnumerable<AdminAllRentalsViewModel>> AllActiveRentalsAsync();
 
         Task<IEnumerable<RentHistoryViewModel>> MyRentHistoryAsync(string renterId);
 

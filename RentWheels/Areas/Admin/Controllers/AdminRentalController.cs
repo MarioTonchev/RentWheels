@@ -19,7 +19,7 @@ namespace RentWheels.Areas.Admin.Controllers
         [HttpGet]
 		public async Task<IActionResult> All()
 		{
-			var model = await rentalService.AllActiveRentals();
+			var model = await rentalService.AllActiveRentalsAsync();
 
 			return View(model);
 		}
