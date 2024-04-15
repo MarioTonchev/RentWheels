@@ -15,7 +15,7 @@ namespace RentWheels.Core.Services
             repository = _repository;
         }
 
-		public async Task<IEnumerable<AllMessagesViewModel>> MyMessages(string receiverId)
+		public async Task<IEnumerable<AllMessagesViewModel>> MyMessagesAsync(string receiverId)
 		{
 			return await repository.AllAsReadOnly<Message>().Where(m => m.ReceiverId == receiverId)
 				.Select(m => new AllMessagesViewModel()

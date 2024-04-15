@@ -21,7 +21,7 @@ namespace RentWheels.Controllers
 		[HttpGet]
 		public async Task<IActionResult> MyMessages()
 		{
-			var model = await messageService.MyMessages(User.Id());
+			var model = await messageService.MyMessagesAsync(User.Id());
 
 			return View(model);
 		}
