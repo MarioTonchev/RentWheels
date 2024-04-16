@@ -160,6 +160,7 @@ namespace RentWheels.Core.Services
                 car.Color = model.Color;
                 car.EngineId = model.EngineId;
                 car.CategoryId = model.CategoryId;
+                car.PricePerDay = model.PricePerDay;
 
                 await repository.SaveChangesAsync();
             }
