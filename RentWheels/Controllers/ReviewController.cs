@@ -64,7 +64,10 @@ namespace RentWheels.Controllers
 
 			await reviewService.AddAsync(model, User.Id());
 
-			return RedirectToAction(nameof(AllByCar), new { id = model.CarId});
+            TempData["message"] = "Review successfully added.";
+            TempData["messageType"] = "success";
+
+            return RedirectToAction(nameof(AllByCar), new { id = model.CarId});
 		}
 
 		[HttpPost]
@@ -83,6 +86,9 @@ namespace RentWheels.Controllers
 			int carId = await reviewService.GetReviewCarIdAsync(id);
 
 			await reviewService.RemoveReviewAsync(id);
+
+			TempData["message"] = "Review successfully removed.";
+			TempData["messageType"] = "success";
 
 			return RedirectToAction(nameof(AllByCar), new { id = carId });
 		}
@@ -119,6 +125,9 @@ namespace RentWheels.Controllers
 			}
 
 			await reviewService.EditAsync(id, model);
+
+			TempData["message"] = "Review successfully edited.";
+			TempData["messageType"] = "success";
 
 			return RedirectToAction(nameof(AllByCar), new { id = model.CarId });
 		}

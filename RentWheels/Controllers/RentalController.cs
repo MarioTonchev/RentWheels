@@ -69,6 +69,9 @@ namespace RentWheels.Controllers
 
 			await rentalService.RentCarAsync(model, id, User.Id(), s, e);
 
+			TempData["message"] = "Renting was successful.";
+			TempData["messageType"] = "success";
+
 			return RedirectToAction(nameof(MyRented));
 		}
 
@@ -94,6 +97,9 @@ namespace RentWheels.Controllers
 			}
 
 			await rentalService.EndRentAsync(id);
+
+			TempData["message"] = "Your rental was ended.";
+			TempData["messageType"] = "success";
 
 			return RedirectToAction(nameof(MyRented));
 		}
@@ -155,6 +161,9 @@ namespace RentWheels.Controllers
 			}
 
 			await rentalService.EditAsync(id, model, s, e);
+
+			TempData["message"] = "Rental successfully edited.";
+			TempData["messageType"] = "success";
 
 			return RedirectToAction(nameof(MyRented));
 		}

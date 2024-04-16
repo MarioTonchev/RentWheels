@@ -47,6 +47,9 @@ namespace RentWheels.Controllers
 
 			await messageService.SendAsync(model, User.Id());
 
+			TempData["message"] = "Message successfully sent.";
+			TempData["messageType"] = "success";
+
 			return RedirectToAction("All", "Car");
 		}
 	}

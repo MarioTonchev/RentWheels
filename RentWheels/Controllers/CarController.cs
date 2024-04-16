@@ -76,7 +76,10 @@ namespace RentWheels.Controllers
 
             await carService.CreateAsync(model, User.Id());
 
-            return RedirectToAction(nameof(All));
+			TempData["message"] = "Car successfully added.";
+			TempData["messageType"] = "success";
+
+			return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
@@ -130,7 +133,10 @@ namespace RentWheels.Controllers
 
             await carService.EditAsync(id, model);
 
-            return RedirectToAction(nameof(MyCars));
+			TempData["message"] = "Car successfully edited.";
+			TempData["messageType"] = "success";
+
+			return RedirectToAction(nameof(MyCars));
         }
 
         [HttpGet]
